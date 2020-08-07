@@ -30,6 +30,7 @@ If you wanted for workshop version (ideal for personal/private gaming with your 
 ## Required Addons
 * ULX Admin Mod. ( Workshop or Legacy Download: http://ulyssesmod.net/downloads.php )
 * (Optional) M9K/TFA Base. You can optionally subscribe the M9K weapon base if you wish to use custom weapon base for bonus weapon, otherwise will use from default sandbox weapon base.
+
 Here is also a map and addon pack for the gamemode, if you are looking for some addons.
 https://steamcommunity.com/sharedfiles/filedetails/?id=1760588052
 
@@ -62,12 +63,17 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=1760588052
 ## Support
 Before asking myself or the comments for support please consider going to our website https://prophuntenhanced.xyz/ or wiki https://prophuntenhanced.xyz/wiki/index.php
 
+## CREDITS
 This is a re-upload of Wolvins Prophunt : Enhanced Version 15 H due to wolvins termination of the gamemode.
 
-## CREDITS
 Credit goes for the original authors of the gamemodes and who made Prop Hunt compatible with GMOD 13.
+
 Originally written and released by Darkimmortal (TF2)
+
 Originally ported to GMod: AMT
+
 First fix for GMod 13: Leleudk
+
 Enhanced, fixed and published: Kowalski7cc
+
 Major Enhancment: Wolvindra-Vinzuerio, D4UNKNOWNFOX2010, Lucky
