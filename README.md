@@ -2,8 +2,6 @@
 
 ![Prop Hunt: Enhanced Logo](https://i.ibb.co/7Yq3PhX/image.png "Prop Hunt: Enhanced v.15")
 
-![Prop Hunt: Enhanced Cover](https://sv.wolvin.pw/Public/phe-prophunt_main.jpg "Prop Hunt: Enhanced v.15 New Main Menu")
-
 ## Information
 **Version: 15, Revision: H, Release Type: Public**
 
@@ -66,7 +64,7 @@ Before asking myself or the comments for support please consider going to our we
 
 This is a re-upload of Wolvins Prophunt : Enhanced Version 15 H due to wolvins termination of the gamemode.
 
-## CREDITS:
+## CREDITS
 Credit goes for the original authors of the gamemodes and who made Prop Hunt compatible with GMOD 13.
 Originally written and released by Darkimmortal (TF2)
 Originally ported to GMod: AMT
