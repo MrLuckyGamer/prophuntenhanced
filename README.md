@@ -7,14 +7,14 @@
 
 Minor Update (*This update will receive occassional updates since the development status are on hiatus.*)
 
-### Main gamemode Description
+## Main gamemode Description
 Prop Hunt: Enhanced is an enhanced version of Classic original **Prop Hunt** Gamemode. The gamemode is focused to be always maintained and fully customizable with many things.
 The gamemode also includes several many major changes including the HUD, the code optimisation, Player skins, and other kind of additional features.
 
 The gamemode was contributted to the old Classic Prop Hunt as for the fixes on march 2015 update (which completely broken) with the viewmodel fix additions. The classic version may no longer
 maintained anymore.
 
-### Available Links
+## Available Links
 [**Wiki: Help & FAQs**](https://prophuntenhanced.xyz/wiki/index.php)
 
 [**Downloads**](https://prophuntenhanced.xyz/download)
