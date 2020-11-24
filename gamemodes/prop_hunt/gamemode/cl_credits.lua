@@ -28,28 +28,18 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 		version = GAMEMODE._VERSION,
 		rev 	= GAMEMODE.REVISION,
 		credits	= "Yam, Lucky, Godfather, adk, Lucas2107, Jonpopnycorn, Thundernerd",
-		lgit	= "https://github.com/Vinzuerio/ph-enhanced/",
-		lhome	= "https://prophunt.wolvindra.net/",
+		lgit	= "https://github.com/MrLuckyGamer/prophuntenhanced",
+		lhome	= "https://prophuntenhanced.xyz/",
 		ldonate = GAMEMODE.DONATEURL,
-		lwiki	= "https://prophunt.wolvindra.net/?go=phe_faq",
-		lklog	= "https://prophunt.wolvindra.net/?go=changelog",
-		lplugins = "https://prophunt.wolvindra.net/?go=plugins"
+		lwiki	= "https://prophuntenhanced.xyz/wiki/index.php",
+		lklog	= "https://prophunt.wolvindra.net/changelogs",
+		lplugins = "https://prophuntenhanced.xyz/plugins"
 	}
 	
 	pVgui("","label","PHE.TitleFont",grid, label.title .. " [BETA]" )
 	pVgui("","label","Trebuchet24",grid, "Current Version: "..label.version.." | Current Revision: "..label.rev)
-	pVgui("","label","Trebuchet24",grid, "If you are enjoyed with the gamemode, Please support by Donating!" )
+	pVgui("","label","Trebuchet24",grid, "If you have enjoyed the gamemode, Please support by Donating!" )
 	pVgui("spacer0","spacer",nil,grid,"" )
-	pVgui("","label",false,grid, "Changelog & Updates" )
-	pVgui("","btn",{max = 2,textdata = {
-		[1] = {"See Changelog", 	  function() gui.OpenURL(label.lklog); tab:GetParent():Close() end},
-		[2] = {"Check for Updates", 
-			function()
-				LocalPlayer():ConCommand("ph_check_update")
-				Derma_Message("Check on your console by pressing [~] or F10 key!","Checking Updates","OK, Got it!")
-			end},
-	}},grid,"")
-	pVgui("spacer1","spacer",nil,grid,"" )
 	pVgui("","label",false,grid, "Helpful External Links & Credits" )
 	pVgui("","btn",{max = 4,textdata = {
 		[1] = {"DONATE to PH:E Project", 	  function() gui.OpenURL(label.ldonate) end},

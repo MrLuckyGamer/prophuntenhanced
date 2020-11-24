@@ -55,8 +55,8 @@ GM.Author	= "Wolvindra-Vinzuerio, D4UNKN0WNM4N2010 & Lucky"
 
 GM._VERSION = "15"
 GM.REVISION	= "H"
-GM.DONATEURL = "https://prophunt.wolvindra.net/go/donate_go.php?gamemodeonly=true"
-GM.UPDATEURL = "https://raw.githubusercontent.com/Vinzuerio/ph-enhanced/master/updates/version.json"
+GM.DONATEURL = "https://prophuntenhanced.xyz/donate"
+GM.UPDATEURL = "https://prophuntenhanced.xyz/download"
 
 -- Help info
 GM.Help = [[An Enhanced Classic Prop Hunt Gamemode.
