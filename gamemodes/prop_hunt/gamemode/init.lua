@@ -12,6 +12,7 @@ AddCSLuaFile("cl_menu.lua")
 AddCSLuaFile("cl_targetid.lua")
 AddCSLuaFile("cl_autotaunt.lua")
 AddCSLuaFile("cl_credits.lua")
+AddCSLuaFile( "cl_scoreboard.lua" )
 
 -- Include the required lua files
 include("sv_networkfunctions.lua")
