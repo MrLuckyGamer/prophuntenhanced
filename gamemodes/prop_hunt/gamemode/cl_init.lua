@@ -35,6 +35,7 @@ include("cl_menu.lua")
 include("cl_tauntwindow.lua")
 include("cl_targetid.lua")
 include("cl_autotaunt.lua")
+include( "cl_scoreboard.lua" )
 
 include("cl_credits.lua")
 
@@ -443,11 +444,11 @@ net.Receive("utilWLVShowMessage", function()
 		Derma_Query("Hello!\nIt seems you are enjoying the latest version of Prop Hunt: Enhanced.\nUnfortunately, PH:E may be facing to End of Development, which mean will be no support/development in future. The reason is I may not able to continue the project because of no proper computer available.\n\nIf you'd like to help to continue, you can contribute by yourself/fork on GitHub. Or, if you are zero-idea on coding, you could contribute by Donating. It really helps and hopefully achieve to the goal and make the enhanced version alive again!", "[ Prop Hunt: Enhanced ] - End of Development",
 		"Contribute on GitHub", function()
 			print("[PH: Enhanced] - Opening the GitHub page...")
-			gui.OpenURL("https://github.com/Vinzuerio/ph-enhanced")
+			gui.OpenURL("https://github.com/MrLuckyGamer/prophuntenhanced")
 		end,
 		"Help by Donating", function()
 			print("[PH: Enhanced] - Opening the Donation page...")
-			gui.OpenURL("https://prophunt.wolvindra.net/phe/go/donate_go.php?gamemodeonly=true")
+			gui.OpenURL("https://prophuntenhanced.xyz/donate")
 		end,
 		"Remind me later", function()
 			cookie.Set("nextPHEDevNotify", time + cooldown)
