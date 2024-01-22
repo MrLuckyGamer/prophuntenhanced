@@ -71,6 +71,7 @@ function GM:CalcView(pl, origin, angles, fov)
 		if GetConVar("ph_prop_camera_collisions"):GetBool() then
 			local trace = {}
 
+			-- filter ourselves
 			local filterent = ents.FindByClass("ph_prop")
 			table.insert(filterent, pl)
 			
@@ -87,8 +88,17 @@ function GM:CalcView(pl, origin, angles, fov)
 			
 			trace.filter = filterent
 			
+			-- perform trace
 			local tr = util.TraceLine(trace)
-			view.origin = tr.HitPos
+			
+			-- collision
+			local pos = tr.HitPos
+			if tr.Fraction < 1.0 then
+				pos = pos + tr.HitNormal * 5
+			end
+			view.origin = pos
+			
+			--view.origin = tr.HitPos
 		else
 			if cHullz < 24 then
 				view.origin = origin + Vector(0, 0, cHullz + (24-cHullz)) + (angles:Forward() * -80)
