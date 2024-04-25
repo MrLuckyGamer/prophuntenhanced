@@ -4,16 +4,11 @@
 ![Prop Hunt: Enhanced Menu](https://i.imgur.com/bXu9yeA.png "Prop Hunt: Enhanced v.15")
 
 ## Information
-**Version: 15, Revision: H, Release Type: Public**
-
-Minor Update (*This update will receive occassional updates since the development status are on hiatus.*)
 
 ## Main gamemode Description
-Prop Hunt: Enhanced is an enhanced version of Classic original **Prop Hunt** Gamemode. The gamemode is focused to be always maintained and fully customizable with many things.
-The gamemode also includes several many major changes including the HUD, the code optimisation, Player skins, and other kind of additional features.
+Prop Hunt: Enhanced is an improved version of the classic Prop Hunt Gamemode. This gamemode is focused on continuous maintenance and full customisation, offering numerous features. It includes significant changes such as an enhanced HUD, code optimisation, player skins, and additional features.
 
-The gamemode was contributted to the old Classic Prop Hunt as for the fixes on march 2015 update (which completely broken) with the viewmodel fix additions. The classic version may no longer
-maintained anymore.
+This gamemode was contributed to the original Prop Hunt as a fix for the March 2015 update (which completely broke the original version) and includes viewmodel fix additions. The classic version may no longer be maintained.
 
 ## Available Links
 [**Wiki: Help & FAQs**](https://prophuntenhanced.xyz/wiki/index.php)
@@ -30,7 +25,7 @@ If you wanted for workshop version (ideal for personal/private gaming with your 
 
 ## Required Addons
 * ULX Admin Mod. ( Workshop or Legacy Download: http://ulyssesmod.net/downloads.php )
-* (Optional) M9K/TFA Base. You can optionally subscribe the M9K weapon base if you wish to use custom weapon base for bonus weapon, otherwise will use from default sandbox weapon base.
+* (Optional) M9K/TFA Base. You can optionally subscribe to the M9K weapon base if you wish to use a custom weapon base for bonus weapons; otherwise, it will use the default sandbox weapon base.
 
 Here is also a map and addon pack for the gamemode, if you are looking for some addons.
 https://steamcommunity.com/sharedfiles/filedetails/?id=1760588052
@@ -51,7 +46,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=1760588052
 * Prop Halo
 * New flashlight method for props
 * Additional models for props
-* 4 new random hunter skin
+* 4 new random hunter skins
 * Fixed viewmodels
 * New Lucky Balls
 * New weapons from Lucky Balls
@@ -62,19 +57,14 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=1760588052
 * ...and many more!
 
 ## Support
-Before asking myself or the comments for support please consider going to our website https://prophuntenhanced.xyz/ or wiki https://prophuntenhanced.xyz/wiki/index.php
+Before asking myself or the comments for support, please consider visiting our website https://prophuntenhanced.xyz/ or wiki https://prophuntenhanced.xyz/wiki/index.php
 
 ## CREDITS
-This is a re-upload of Wolvins Prophunt : Enhanced Version 15 H due to wolvins termination of the gamemode.
+This is my modified version of Wolvins Prophunt: Enhanced Version 15 H due to Wolvins termination of the gamemode.
 
-Credit goes for the original authors of the gamemodes and who made Prop Hunt compatible with GMOD 13.
-
+Credit goes to the original authors of the gamemodes and those who made Prop Hunt compatible with GMOD 13.
 Originally written and released by Darkimmortal (TF2)
-
 Originally ported to GMod: AMT
-
 First fix for GMod 13: Leleudk
-
-Enhanced, fixed and published: Kowalski7cc
-
-Major Enhancment: Wolvindra-Vinzuerio, D4UNKNOWNFOX2010, Lucky
+Enhanced, fixed, and published: Kowalski7cc
+Major Enhancement: Wolvindra-Vinzuerio, D4UNKNOWNFOX2010, Lucky
