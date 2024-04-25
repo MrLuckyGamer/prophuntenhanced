@@ -63,8 +63,13 @@ Before asking myself or the comments for support, please consider visiting our w
 This is my modified version of Wolvins Prophunt: Enhanced Version 15 H due to Wolvins termination of the gamemode.
 
 Credit goes to the original authors of the gamemodes and those who made Prop Hunt compatible with GMOD 13.
+
 Originally written and released by Darkimmortal (TF2)
+
 Originally ported to GMod: AMT
+
 First fix for GMod 13: Leleudk
+
 Enhanced, fixed, and published: Kowalski7cc
+
 Major Enhancement: Wolvindra-Vinzuerio, D4UNKNOWNFOX2010, Lucky
