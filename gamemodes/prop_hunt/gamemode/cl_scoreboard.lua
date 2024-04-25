@@ -29,7 +29,7 @@ local function createRoboto(s)
 	})
 end
 
-for i = 5, 50, 5 do
+for i = 1, 50, 1 do
 	createRoboto(i)
 end
 createRoboto(8)
@@ -45,9 +45,16 @@ local function colMul(color, mul)
 	color.b = math.Clamp(math.Round(color.b * mul), 0, 255)
 end
 
+local function formatTime(totalSeconds)
+    local days = math.floor(totalSeconds / 86400)
+    local hours = math.floor((totalSeconds % 86400) / 3600)
+    local minutes = math.floor((totalSeconds % 3600) / 60)
+
+    return days, hours, minutes
+end
 
 local muted = Material("icon32/muted.png", "noclamp")
-local skull = Material("materials/vgui/cross.png", "noclamp")
+local skull = Material("materials/vgui/skull.png", "noclamp")
 
 local function addPlayerItem(self, mlist, ply, pteam)
 
@@ -66,10 +73,11 @@ local function addPlayerItem(self, mlist, ply, pteam)
 			local s = 4
 
 			if !ply:Alive() then
-				surface.SetMaterial(skull)
-				surface.SetDrawColor(220, 220, 220, 255)
-				surface.DrawTexturedRect(s, h / 2 - 16, 32, 32)
-				s = s + 32 + 4
+				--surface.SetMaterial(skull)
+				draw.SimpleText("☠" , "RobotoHUD-18")
+				--surface.SetDrawColor(220, 220, 220, 255)
+				--surface.DrawTexturedRect(s, h / 2 - 16, 32, 32)
+				s = s + 32 + 20
 			end
 
 			if ply:IsMuted() then
@@ -87,22 +95,21 @@ local function addPlayerItem(self, mlist, ply, pteam)
 
 			local col = color_white
 			
-			local hours = 0
-			--local time = ( ply:GetUTimeTotalTime() )
-			
-			if time != nil then
-			
-				hours = math.floor( time / 3600 )
-				
-			end
-			
-			--draw.ShadowText( hours, "RobotoHUD-L20", w - 70, 0, col, 2)
-			
-			draw.ShadowText(ply:Ping(), "RobotoHUD-L20", w - 4, 0, col, 2)
+		--local time = ply:GetUTimeTotalTime() or 0
+        --local days, hours, minutes, seconds = formatTime(math.floor(time))
 
-			draw.ShadowText(ply:Nick(), "RobotoHUD-L20", s, 0, col, 0)
-		end
-	end
+          --local timeString = ""
+        --if days > 0 then
+            --timeString = timeString .. days .. "d "
+        --end
+        --timeString = timeString .. string.format("%2dh %2dm", hours, minutes)
+
+        --draw.ShadowText(timeString, "RobotoHUD-L20", w - 110, 0, col, 2)
+        draw.ShadowText(ply:Ping(), "RobotoHUD-L20", w - 4, 0, col, 2)
+        draw.ShadowText(ply:Nick(), "RobotoHUD-L20", s, 0, col, 0)
+    end
+end
+
 
 	function but:DoClick()
 		if IsValid(ply) then
@@ -187,7 +194,7 @@ local function makeTeamList(parent, pteam)
 	but:Dock(RIGHT)
 	but:SetText("")
 	surface.SetFont("RobotoHUD-20")
-	local tw, th = surface.GetTextSize("Join team")
+	local tw, th = surface.GetTextSize("Join Team")
 	but:SetWide(tw + 6)
 	function but:DoClick()
 		RunConsoleCommand("changeteam", pteam)
@@ -212,7 +219,7 @@ local function makeTeamList(parent, pteam)
 			col.g = col.g * 1.2
 			col.b = col.b * 1.2
 		end
-		draw.ShadowText("Join team", "RobotoHUD-20", 2, h / 2 - th / 2, col, 0)
+		draw.ShadowText("Join Team", "RobotoHUD-20", 2, h / 2 - th / 2, col, 0)
 	end
 
 	mlist = vgui.Create("DScrollPanel", pnl)
@@ -238,7 +245,7 @@ local function makeTeamList(parent, pteam)
 
 		draw.ShadowText("Ping", "RobotoHUD-15", w - 4, 0, col, 2)
 		
-		--draw.ShadowText("Hours", "RobotoHUD-15", w - 70, 0, col, 2)
+		--draw.ShadowText("PlayTime", "RobotoHUD-15", w - 110, 0, col, 2)
 	end
 	mlist:AddItem(head)
 
@@ -290,7 +297,7 @@ function GM:ScoreboardShow()
 			local tw,th = surface.GetTextSize(t)
 			draw.ShadowText(t, "RobotoHUD-25", 4, 0, Color(199, 49, 29), 0)
 
-			draw.ShadowText("by: Wolvindra-Vinzuerio, D4UNKN0WNM4N & Lucky.", "RobotoHUD-L15", 4 + tw + 24, h  * 0.9, Color(220, 220, 220), 0, 4)
+			draw.ShadowText("by: Wolvindra-Vinzuerio, Jai Choccy Fox, & Lucky.", "RobotoHUD-L15", 4 + tw + 24, h  * 0.9, Color(220, 220, 220), 0, 4)
 			
 			local round = GetGlobalInt( "RoundNumber", 0 )
 			local total_rounds = GetConVarNumber( "ph_rounds_per_map" )
@@ -327,6 +334,8 @@ function GM:ScoreboardShow()
 			if c then
 				draw.ShadowText(c, "RobotoHUD-10", tw + 8 + 4, h / 2, color_white, 0, 1)
 			end
+			local mapName = "Map: " .. game.GetMap()
+			draw.ShadowText(mapName, "RobotoHUD-L15", w - 10, h * 0.9, Color(220, 220, 220), TEXT_ALIGN_RIGHT, 4)
 		end
 
 		local but = vgui.Create("DButton", bottom)
@@ -367,6 +376,7 @@ function GM:ScoreboardShow()
 
 
 	end
+	
 end
 function GM:ScoreboardHide()
 	if GAMEMODE.GameState == 3 then

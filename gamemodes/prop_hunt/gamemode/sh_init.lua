@@ -41,10 +41,6 @@ else
     include("mapvote/cl_mapvote.lua")
 end
 
--- Updates!
-AddCSLuaFile("sh_httpupdates.lua")
-include("sh_httpupdates.lua")
-
 -- Fretta!
 DeriveGamemode("fretta")
 IncludePlayerClasses()

@@ -34,12 +34,13 @@ function PANEL:AddEntityText( txt )
 		
 	end
 
-	if( txt:IsValid() ) then
-		self:AddText( txt:GetClass(), GAMEMODE.DeathNoticeDefaultColor )	
-	else
-		self:AddText( tostring( txt ) )	
+	if txt then
+    	if txt:IsValid() then
+        	self:AddText(txt:GetClass(), GAMEMODE.DeathNoticeDefaultColor)
+    	else
+        	self:AddText(tostring(txt))
+    	end
 	end
-
 end
 
 function PANEL:AddItem( item )

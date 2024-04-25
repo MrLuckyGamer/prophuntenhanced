@@ -48,7 +48,7 @@ if CLIENT then
 			but:SetPos(40,96)
 			but:SetSize(256,40)
 			but:SetText("Explore PH: Enhanced Plugins")
-			but.DoClick = function() gui.OpenURL("https://project.wolvindra.net/phe/?go=plugins") end
+			but.DoClick = function() gui.OpenURL("https://prophuntenhanced.xyz/plugins") end
 			but:SetIcon("icon16/bricks.png")
 		else
 			for plName,Data in pairs(PHE.PLUGINS) do

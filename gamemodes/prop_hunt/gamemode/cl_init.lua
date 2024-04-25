@@ -35,7 +35,7 @@ include("cl_menu.lua")
 include("cl_tauntwindow.lua")
 include("cl_targetid.lua")
 include("cl_autotaunt.lua")
-include( "cl_scoreboard.lua" )
+include("cl_scoreboard.lua")
 
 include("cl_credits.lua")
 
