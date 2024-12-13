@@ -32,7 +32,6 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 		lhome	= "https://prophuntenhanced.xyz/",
 		ldonate = GAMEMODE.DONATEURL,
 		lwiki	= "https://prophuntenhanced.xyz/wiki/index.php",
-		lklog	= "https://prophunt.wolvindra.net/changelogs",
 		lplugins = "https://prophuntenhanced.xyz/plugins"
 	}
 	
@@ -41,12 +40,12 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 	pVgui("","label","Trebuchet24",grid, "If you have enjoyed the gamemode, Please support by Donating!" )
 	pVgui("spacer0","spacer",nil,grid,"" )
 	pVgui("","label",false,grid, "Helpful External Links & Credits" )
-	pVgui("","btn",{max = 4,textdata = {
+	pVgui("","btn",{max = 5,textdata = {
 		[1] = {"DONATE to PH:E Project", 	  function() gui.OpenURL(label.ldonate) end},
 		[2] = {"PH:E Official Homepage", 	  function() gui.OpenURL(label.lhome) end},
 		[3] = {"GitHub Repository", 	  	  function() gui.OpenURL(label.lgit) end},
 		[4] = {"PH:E Manuals & Wiki", 		  function() gui.OpenURL(label.lwiki) end},
-		[4] = {"PH:E Addons/Plugins", 		  function() gui.OpenURL(label.lplugins) end}
+		[5] = {"PH:E Addons/Plugins", 		  function() gui.OpenURL(label.lplugins) end}
 	}},grid,"")
 	pVgui("spacer1","spacer",nil,grid,"" )
 	pVgui("","label","Trebuchet24",grid, "Special Thanks for the support, suggestion & contributing:\n"..label.credits )
