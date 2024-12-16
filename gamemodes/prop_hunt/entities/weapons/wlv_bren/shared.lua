@@ -10,27 +10,24 @@
 
 local function CheckConVar(cvar)
 	if cvar == nil then return false end
-	if cvar != nil then return true end
+	if cvar ~= nil then return true end
 	if IsValid(cvar) then return true end
 	return false
 end
 
-if CheckConVar(GetConVar("DebugM9K")) or (CheckConVar(GetConVar("sv_tfa_conv_m9konvert")) && GetConVar("sv_tfa_conv_m9konvert"):GetBool()) then -- check if M9K or TFA is Exists on server. otherwise will use from Default base instead.
+if CheckConVar(GetConVar("DebugM9K")) or (CheckConVar(GetConVar("sv_tfa_conv_m9konvert")) and GetConVar("sv_tfa_conv_m9konvert"):GetBool()) then -- check if M9K or TFA is Exists on server. otherwise will use from Default base instead.
+	SWEP.Gun = "wlv_bren"
+	if GetConVar(SWEP.Gun .. "_allowed") ~= nil and not GetConVar(SWEP.Gun .. "_allowed"):GetBool() then
+		SWEP.Base = "bobs_blacklisted"
+		SWEP.PrintName = SWEP.Gun
+		return
+	end
 
-	SWEP.Gun = ("wlv_bren")
-	if (GetConVar(SWEP.Gun.."_allowed")) != nil then
-		if not (GetConVar(SWEP.Gun.."_allowed"):GetBool()) then 
-			SWEP.Base = "bobs_blacklisted" 
-			SWEP.PrintName = SWEP.Gun 
-			return 
-		end
-	end
-	
-	local icol = Color( 255, 255, 255, 255 )
+	local icol = Color(255, 255, 255, 255)
 	if CLIENT then
-		killicon.Add( SWEP.Gun, "vgui/hud/"..SWEP.Gun, icol )
+		killicon.Add( SWEP.Gun, "vgui/hud/" .. SWEP.Gun, icol )
 	end
-	
+
 	SWEP.Category				= "Wolvin\'s PH Bonus Weapon"
 	SWEP.Author					= "Wolvindra-Vinzuerio"
 	SWEP.Contact				= "wolvindra.vinzuerio@gmail.com"
@@ -57,17 +54,17 @@ if CheckConVar(GetConVar("DebugM9K")) or (CheckConVar(GetConVar("sv_tfa_conv_m9k
 		SWEP.WorldModel				= Model("models/weapons/w_mach_brenmk3.mdl")
 		-- this one is used for M9K. TFA may ignore this.
 		SWEP.ShowWorldModel			= false
-		
+
 		SWEP.UseHands				= true
 	else
 		SWEP.ViewModel				= Model("models/weapons/v_mkbren.mdl")
 		SWEP.WorldModel				= Model("models/weapons/w_mkbren.mdl")
 		-- this one is used for M9K. TFA may ignore this.
 		SWEP.ShowWorldModel			= true
-		
+
 		SWEP.UseHands				= false
 	end
-	
+
 	SWEP.ShowWorldModel			= true
 	SWEP.Base					= "bobs_gun_base"
 	SWEP.Spawnable				= false
@@ -137,25 +134,19 @@ if CheckConVar(GetConVar("DebugM9K")) or (CheckConVar(GetConVar("sv_tfa_conv_m9k
 	if GetConVar("M9KDefaultClip") == nil then
 		print("M9KDefaultClip is missing! You may have hit the lua limit!")
 	else
-		if GetConVar("M9KDefaultClip"):GetInt() != -1 then
+		if GetConVar("M9KDefaultClip"):GetInt() ~= -1 then
 			SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize * GetConVar("M9KDefaultClip"):GetInt()
 		end
 	end
 
-	if GetConVar("M9KUniqueSlots") != nil then
-		if not (GetConVar("M9KUniqueSlots"):GetBool()) then 
-			SWEP.SlotPos = 3
-		end
+	if GetConVar("M9KUniqueSlots") ~= nil and not GetConVar("M9KUniqueSlots"):GetBool() then
+		SWEP.SlotPos = 3
 	end
-
 else
 	-- Revert to default base, if server has no M9K.
-	
 	if CLIENT then
-		killicon.Add( "wlv_bren", "vgui/hud/wlv_bren", Color(255,255,255,255) )
-	end
-	
-	if SERVER then
+		killicon.Add("wlv_bren", "vgui/hud/wlv_bren", Color(255, 255, 255, 255))
+	elseif SERVER then
 		printVerbose("[ Lucky Ball :: Bren MK ] Server has no default M9K Base, Reverting to normal sandbox base!")
 	end
 
@@ -186,47 +177,37 @@ else
 	SWEP.ViewModelFOV			= 60
 	SWEP.ViewModelFlip			= false
 
-	if GetConVar("ph_mkbren_use_new_mdl"):GetBool() then
-		SWEP.ViewModel				= Model("models/weapons/c_mach_brenmk3.mdl")
-		SWEP.WorldModel				= Model("models/weapons/w_mkbren.mdl")
-		SWEP.UseHands				= true
-	else
-		SWEP.ViewModel				= Model("models/weapons/v_mkbren.mdl")
-		SWEP.WorldModel				= Model("models/weapons/w_mkbren.mdl")
-		SWEP.UseHands				= false
-	end
+	local use_new_mdl	= GetConVar("ph_mkbren_use_new_mdl"):GetBool()
+	SWEP.ViewModel		= Model("models/weapons/" .. (use_new_mdl and "c_mach_brenmk3.mdl" or "v_mkbren.mdl"))
+	SWEP.WorldModel		= Model("models/weapons/w_mkbren.mdl")
+	SWEP.UseHands		= use_new_mdl
 
 	function SWEP:Initialize()
 		self:SetWeaponHoldType("ar2")
 	end
 
 	function SWEP:PrimaryAttack()
-
-		if (!self:CanPrimaryAttack()) then 
-			return
-		end
+		if not self:CanPrimaryAttack() then return end
 
 		local punch = {}
 		punch.x = math.random(-0.7,-0.2)
 		punch.y = math.random(0, 0.1)
 		punch.z = 0
-		
+
 		if GetConVar("ph_mkbren_use_new_mdl"):GetBool() then
-			self.Weapon:EmitSound( Sound("brenmk3.single") )
+			self:EmitSound(Sound("brenmk3.single"))
 		else
-			self.Weapon:EmitSound( Sound("BREN.Fire") )
+			self:EmitSound(Sound("BREN.Fire"))
 		end
-		self:ShootBullet( 35, 1, 0.025)
+		self:ShootBullet(35, 1, 0.025)
 		self:TakePrimaryAmmo(1)
 		self.Owner:ViewPunch(Angle(punch.x, punch.y, punch.z))
-		self.Weapon:SetNextPrimaryFire(CurTime() + 0.12)
-
+		self:SetNextPrimaryFire(CurTime() + 0.12)
 	end
-	
+
 	function SWEP:Deploy()
 		self:SetDeploySpeed(1)
 	end
-	
 end
 
 -- Sound Override Tables for BREN.
@@ -270,9 +251,9 @@ wepsnd.fire = {
 for k, v in pairs(FS) do
 	wepsnd.fire.name = k
 	wepsnd.fire.sound = v
-		
+
 	sound.Add(wepsnd.fire)
-end	
+end
 
 wepsnd.weps = {
 	channel = CHAN_STATIC,
@@ -281,10 +262,10 @@ wepsnd.weps = {
 	pitchstart = 100,
 	pitchend = 100
 }
-	
+
 for k, v in pairs(RS) do
 	wepsnd.weps.name = k
 	wepsnd.weps.sound = v
-	
+
 	sound.Add(wepsnd.weps)
 end

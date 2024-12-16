@@ -21,26 +21,33 @@ function PANEL:Init()
 	self.Items = {}
 end
 
-function PANEL:AddEntityText( txt )
+function PANEL:AddEntityText(txt)
+    -- Ensure `txt` is not nil
+    if not txt then
+        self:AddText("Suicide", GAMEMODE.DeathNoticeDefaultColor)
+        return false
+    end
 
-	if ( type( txt ) == "string" ) then return false end
-	
-	if ( type( txt ) == "Player" ) then 
-	
-		self:AddText( txt:Nick(), GAMEMODE:GetTeamColor( txt ) )
-		if ( txt == LocalPlayer() ) then self.m_bHighlight = true end
-		
-		return true
-		
-	end
+    -- Handle case where `txt` is a player
+    if type(txt) == "Player" then
+        local playerName = IsValid(txt) and txt:Nick() or "Unknown Player"
+        self:AddText(playerName, GAMEMODE:GetTeamColor(txt))
+        if txt == LocalPlayer() then
+            self.m_bHighlight = true
+        end
+        return true
+    end
 
-	if txt then
-    	if txt:IsValid() then
-        	self:AddText(txt:GetClass(), GAMEMODE.DeathNoticeDefaultColor)
-    	else
-        	self:AddText(tostring(txt))
-    	end
-	end
+    -- Handle case where `txt` is an entity
+    if txt.IsValid and txt:IsValid() then
+        local entityClass = txt:GetClass()
+        self:AddText(entityClass, GAMEMODE.DeathNoticeDefaultColor)
+        return true
+    end
+
+    -- Fallback for invalid or unrecognized entities
+    self:AddText("Unknown", GAMEMODE.DeathNoticeDefaultColor)
+    return false
 end
 
 function PANEL:AddItem( item )
@@ -50,26 +57,31 @@ function PANEL:AddItem( item )
 	
 end
 
-function PANEL:AddText( txt, color )
+function PANEL:AddText(txt, color)
+    -- Prevent infinite recursion by skipping entity handling here
+    if type(txt) ~= "string" then
+        local processed = self:AddEntityText(txt)
+        if processed then return end
+    end
 
-	if ( self:AddEntityText( txt ) ) then return end
-	
-	local txt = tostring( txt )
-	
-	local lbl = vgui.Create( "DLabel", self )
-	
-	Derma_Hook( lbl, 	"ApplySchemeSettings", 	"Scheme", 	"GameNoticeLabel" )
-	lbl:ApplySchemeSettings()
-	lbl:SetText( txt )
-	
-	if( string.Left( txt , 1 ) == "#" && !color ) then color = GAMEMODE.DeathNoticeDefaultColor end // localised ent death
-	if( GAMEMODE.DeathNoticeTextColor && !color ) then color = GAMEMODE.DeathNoticeTextColor end // something else
-	if ( !color ) then color = color_white end
-	
-	lbl:SetTextColor( color )
-	
-	self:AddItem( lbl )
+    -- Ensure `txt` is a valid string
+    local textToDisplay = tostring(txt or "")
 
+    -- Create a label for the text
+    local lbl = vgui.Create("DLabel", self)
+    Derma_Hook(lbl, "ApplySchemeSettings", "Scheme", "GameNoticeLabel")
+    lbl:ApplySchemeSettings()
+    lbl:SetText(textToDisplay)
+
+    -- Determine text color
+    if string.Left(textToDisplay, 1) == "#" and not color then
+        color = GAMEMODE.DeathNoticeDefaultColor
+    elseif GAMEMODE.DeathNoticeTextColor and not color then
+        color = GAMEMODE.DeathNoticeTextColor
+    end
+
+    lbl:SetTextColor(color or color_white)
+    self:AddItem(lbl)
 end
 
 function PANEL:AddIcon( txt )

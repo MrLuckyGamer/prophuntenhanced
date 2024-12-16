@@ -11,8 +11,10 @@ util.AddNetworkString("CheckAdminFirst")
 util.AddNetworkString("CheckAdminResult")
 util.AddNetworkString("SvCommandReq")
 util.AddNetworkString("SvCommandSliderReq")
+util.AddNetworkString("SvCommandBoxReq")
 util.AddNetworkString("SendTauntStateCmd")
 
+util.AddNetworkString("CL2SV_PlayThisTaunt")
 util.AddNetworkString("CL2SV_ExchangeProp")
 util.AddNetworkString("utilWLVShowMessage")
 
@@ -23,6 +25,12 @@ util.AddNetworkString("PH_RoundDraw_Snd")
 util.AddNetworkString("PH_TeamWinning_Snd")
 util.AddNetworkString("AutoTauntSpawn")
 util.AddNetworkString("AutoTauntRoundEnd")
+
+
+util.AddNetworkString("ResetRotateTeams")
+util.AddNetworkString("ForceHunterAsProp")
+util.AddNetworkString("SendChatMessage")
+
 
 -- some stupid checks
 util.AddNetworkString("PHE.rotateState")

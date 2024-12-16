@@ -178,15 +178,6 @@
 		
 		19
 		{
-			"name"		"ph_min_waitforplayers"
-			"text"		"Minimum Players to wait"
-			"help"		"Numbers of mininum players that we should wait for round start. Value must not contain less than 1."
-			"type"		"Numeric"
-			"default"	"1"
-		}
-
-		20
-		{
 			"name"		"ph_autotaunt_enabled"
 			"text"		"Enable Auto Taunting"
 			"help"		"Should the players be forced to taunt ever X seconds"
@@ -194,13 +185,31 @@
 			"default"	"1"
 		}
 
-		21
+		20
 		{
 			"name"		"ph_autotaunt_delay"
 			"text"		"Auto Taunt Timer"
 			"help"		"Time before auto taunt is invoked"
 			"type"		"Numeric"
 			"default"	"45"
+		}
+
+		21
+		{
+			"name"		"ph_hunter_smg_grenades"
+			"text"		"SMG Grenades"
+			"help"		"Grenades given to hunters"
+			"type"		"Numeric"
+			"default"	"1"
+		}
+		
+		22
+		{
+			"name"		"ph_falldamage"
+			"text"		"Enable Fall Damage"
+			"help"		"Whether players should take damage when falling from heights"
+			"type"		"CheckBox"
+			"default"	"1"
 		}
 	}
 

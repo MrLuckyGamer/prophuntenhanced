@@ -7,68 +7,67 @@ RTV.ChatCommands = {
 }
 
 RTV.TotalVotes = 0
-
 RTV.Wait = 60 -- The wait time in seconds. This is how long a player has to wait before voting when the map changes. 
-
 RTV._ActualWait = CurTime() + RTV.Wait
-
 RTV.PlayerCount = MapVote.Config.RTVPlayerCount or 3
 
 function RTV.ShouldChange()
-	return RTV.TotalVotes >= math.Round(#player.GetAll()*0.66)
+	return RTV.TotalVotes >= math.Round(#player.GetAll() * 0.66)
 end
 
 function RTV.RemoveVote()
-	RTV.TotalVotes = math.Clamp( RTV.TotalVotes - 1, 0, math.huge )
+	RTV.TotalVotes = math.Clamp(RTV.TotalVotes - 1, 0, math.huge)
 end
 
 function RTV.Start()
-	PrintMessage( HUD_PRINTTALK, "The vote has been rocked, map vote imminent")
+	PrintMessage(HUD_PRINTTALK, "The vote has been rocked, map vote imminent")
+
 	timer.Simple(4, function()
 		MapVote.Start(nil, nil, nil, nil)
 	end)
 end
 
-
-function RTV.AddVote( ply )
-
-	if RTV.CanVote( ply ) then
+function RTV.AddVote(ply)
+	if RTV.CanVote(ply) then
 		RTV.TotalVotes = RTV.TotalVotes + 1
 		ply.RTVoted = true
-		MsgN( ply:Nick().." has voted to Rock the Vote." )
-		PrintMessage( HUD_PRINTTALK, ply:Nick().." has voted to Rock the Vote. ("..RTV.TotalVotes.."/"..math.Round(#player.GetAll()*0.66)..")" )
+		MsgN(ply:Nick() .. " has voted to Rock the Vote.")
+
+		-- Loop, because PrintMessage doesn't seem to be working alone
+		for _, _ply in pairs(player.GetAll()) do
+			_ply:PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has voted to Rock the Vote. (" .. RTV.TotalVotes .. "/" .. math.Round(#player.GetAll() * 0.66) .. ")")
+		end
 
 		if RTV.ShouldChange() then
 			RTV.Start()
 		end
 	end
-
 end
 
-hook.Add( "PlayerDisconnected", "Remove RTV", function( ply )
-
+hook.Add("PlayerDisconnected", "Remove RTV", function(ply)
 	if ply.RTVoted then
 		RTV.RemoveVote()
 	end
 
-	timer.Simple( 0.1, function()
-
-		if RTV.ShouldChange() then
-			RTV.Start()
+	timer.Simple(0.1, function()
+		if #player.GetAll() < 1 and not GetConVar("mv_change_when_no_player"):GetBool() then
+			print("MapVote: There is no player to force change map...")
+		else
+			if RTV.ShouldChange() then
+				RTV.Start()
+			end
 		end
+	end)
+end)
 
-	end )
-
-end )
-
-function RTV.CanVote( ply )
+function RTV.CanVote(ply)
 	local plyCount = table.Count(player.GetAll())
-	
+
 	if RTV._ActualWait >= CurTime() then
 		return false, "You must wait a bit before voting!"
 	end
 
-	if GetGlobalBool( "In_Voting" ) then
+	if GetGlobalBool("In_Voting") then
 		return false, "There is currently a vote in progress!"
 	end
 
@@ -79,34 +78,29 @@ function RTV.CanVote( ply )
 	if RTV.ChangingMaps then
 		return false, "There has already been a vote, the map is going to change!"
 	end
+
 	if plyCount < RTV.PlayerCount then
-        return false, "You need more players before you can rock the vote!"
-    end
+		return false, "You need more players before you can rock the vote!"
+	end
 
 	return true
-
 end
 
-function RTV.StartVote( ply )
-
+function RTV.StartVote(ply)
 	local can, err = RTV.CanVote(ply)
 
 	if not can then
-		ply:PrintMessage( HUD_PRINTTALK, err )
+		ply:PrintMessage(HUD_PRINTTALK, err)
 		return
 	end
 
-	RTV.AddVote( ply )
-
+	RTV.AddVote(ply)
 end
+concommand.Add("rtv_start", RTV.StartVote)
 
-concommand.Add( "rtv_start", RTV.StartVote )
-
-hook.Add( "PlayerSay", "RTV Chat Commands", function( ply, text )
-
-	if table.HasValue( RTV.ChatCommands, string.lower(text) ) then
-		RTV.StartVote( ply )
+hook.Add("PlayerSay", "RTV Chat Commands", function(ply, text)
+	if table.HasValue(RTV.ChatCommands, string.lower(text)) then
+		RTV.StartVote(ply)
 		return ""
 	end
-
-end )
+end, HOOK_HIGH)

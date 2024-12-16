@@ -32,10 +32,16 @@ PHE.SVAdmins = {
 	"owner"
 }
 
+PHE.UNSTUCK_COMMANDS = {
+	"!unstuck", "!stuck",
+	"/unstuck", "/stuck",
+	"unstuck", "stuck"
+}
+
 -- Banned Props models
 PHE.BANNED_PROP_MODELS = {}
 
---[[ // DO NOT MODIFY! use from taunts/prop_taunts.lua or hunter_taunts.lua instead! \\ ]]--
+--[[ // DO NOT MODIFY! use from taunts/prop_taunts.lua or hunter_taunts.lua instead! \\ ]]
 PHE.HUNTER_TAUNTS = {
 	["Come to Papa"]				=	"taunts/hunters/come_to_papa.wav",
 	["I am your Father"]			=	"taunts/hunters/father.wav",
@@ -61,7 +67,7 @@ PHE.HUNTER_TAUNTS = {
 	["Over There!!"]				=	"vo/npc/male01/overthere02.wav"
 }
 
---[[ // DO NOT MODIFY! use from taunts/props_taunts.lua or hunters_taunts.lua instead! \\ ]]--
+--[[ // DO NOT MODIFY! use from taunts/props_taunts.lua or hunters_taunts.lua instead! \\ ]]
 PHE.PROP_TAUNTS = {
 	["Run for your Life!"]					=	"vo/npc/male01/runforyourlife02.wav",
 	["Bad Boys"]							=	"taunts/props/bad_boys.wav",
@@ -192,23 +198,23 @@ PHE.WINNINGSOUNDS = {
 }
 
 local function AddDemTaunt()
-
 	printVerbose("[PH:E Taunts] Initializing Custom Taunts...")
-	for propName,propTaunt in pairs(list.Get("PHE.CustomPropTaunts")) do 
-		printVerbose("[PH:E Taunts] Adding Custom PROP taunts -> "..propName)
+
+	for propName,propTaunt in pairs(list.Get("PHE.CustomPropTaunts")) do
+		printVerbose("[PH:E Taunts] Adding Custom PROP taunts -> " .. propName)
 		PHE.PH_TAUNT_CUSTOM.PROP[propName] = propTaunt
-		if (SERVER) then 
-			resource.AddSingleFile("sound/"..propTaunt)
+		if SERVER then
+			resource.AddSingleFile("sound/" .. propTaunt)
 		end
 	end
+
 	for huntName,huntTaunt in pairs(list.Get("PHE.CustomHunterTaunts")) do
-		printVerbose("[PH:E Taunts] Adding Custom HUNTER taunts -> "..huntName)
-		PHE.PH_TAUNT_CUSTOM.HUNTER[huntName] = huntTaunt 
-		if (SERVER) then
-			resource.AddSingleFile("sound/"..huntTaunt)
+		printVerbose("[PH:E Taunts] Adding Custom HUNTER taunts -> " .. huntName)
+		PHE.PH_TAUNT_CUSTOM.HUNTER[huntName] = huntTaunt
+		if SERVER then
+			resource.AddSingleFile("sound/" .. huntTaunt)
 		end
 	end
-	
 end
 hook.Add("Initialize", "PHE.AddTauntTables", AddDemTaunt)
 
@@ -225,12 +231,10 @@ end
 
 -- External Use only, such as Taunt Collection or other.
 -- MAKE SURE TO CALL 'PHE:RefreshTauntList()' AFTER REMOVING THE SPECIFIED TAUNTS!
-function PHE:RemoveCustomTauntByPath(idTeam,strTaunt)
-	if idTeam == TEAM_PROPS then
-		if table.HasValue(PHE.PH_TAUNT_CUSTOM.PROP, strTaunt) then table.RemoveByValue(strTaunt) end
-	end
-	if idTeam == TEAM_HUNTERS then
-		if table.HasValue(PHE.PH_TAUNT_CUSTOM.HUNTER, strTaunt) then table.RemoveByValue(strTaunt) end
+function PHE:RemoveCustomTauntByPath(idTeam, strTaunt)
+	if idTeam == TEAM_PROPS and table.HasValue(PHE.PH_TAUNT_CUSTOM.PROP, strTaunt) or
+	(idTeam == TEAM_HUNTERS and table.HasValue(PHE.PH_TAUNT_CUSTOM.HUNTER, strTaunt)) then
+		table.RemoveByValue(strTaunt)
 	end
 end
 
@@ -242,10 +246,10 @@ function PHE:GetAllTeamTaunt(teamid)
 				taunt[name] = tprop
 			end
 		end
-		
+
 		return taunt
 	end
-	
+
 	if teamid == TEAM_HUNTERS then
 		local taunt = table.Copy(PHE.HUNTER_TAUNTS)
 		if table.Count(PHE.PH_TAUNT_CUSTOM.HUNTER) > 0 then
@@ -253,14 +257,14 @@ function PHE:GetAllTeamTaunt(teamid)
 				taunt[name] = thunter
 			end
 		end
-		
+
 		return taunt
 	end
-	
+
 	return false
 end
 
-function PHE:GetTeamTaunt(teamid,bCustom)
+function PHE:GetTeamTaunt(teamid, bCustom)
 	if teamid == TEAM_PROPS then
 		if bCustom then
 			if table.Count(PHE.PH_TAUNT_CUSTOM.PROP) > 0 then
@@ -272,9 +276,9 @@ function PHE:GetTeamTaunt(teamid,bCustom)
 			return PHE.PROP_TAUNTS
 		end
 	end
-	
+
 	if teamid == TEAM_HUNTERS then
-		if bCustom then 
+		if bCustom then
 			if table.Count(PHE.PH_TAUNT_CUSTOM.HUNTER) > 0 then
 				return PHE.PH_TAUNT_CUSTOM.HUNTER
 			else
@@ -284,35 +288,35 @@ function PHE:GetTeamTaunt(teamid,bCustom)
 			return PHE.HUNTER_TAUNTS
 		end
 	end
-	
+
 	return false
 end
 
 function PHE:RefreshTauntList()
-	local proptaunt 	= {
+	local proptaunt = {
 		normal	= table.Copy(PHE.PROP_TAUNTS),
 		custom	= table.Copy(PHE.PH_TAUNT_CUSTOM.PROP)
 	}
 	table.Empty(PHE.PROP_TAUNTS)
 	table.Empty(PHE.PH_TAUNT_CUSTOM.PROP)
-	
-	local huntertaunt	= {
+
+	local huntertaunt = {
 		normal	= table.Copy(PHE.HUNTER_TAUNTS),
 		custom	= table.Copy(PHE.PH_TAUNT_CUSTOM.HUNTER)
 	}
 	table.Empty(PHE.HUNTER_TAUNTS)
 	table.Empty(PHE.PH_TAUNT_CUSTOM.HUNTER)
-	
+
 	-- Sort Prop Taunts
-	for name,taunt in pairs(proptaunt.normal) do
+	for name, taunt in pairs(proptaunt.normal) do
 		PHE.PROP_TAUNTS[name] = taunt
-	end	
-	for name,taunt in pairs(proptaunt.custom) do
+	end
+	for name, taunt in pairs(proptaunt.custom) do
 		PHE.PH_TAUNT_CUSTOM.PROP[name] = taunt
 	end
 	table.sort(PHE.PROP_TAUNTS)
 	table.sort(PHE.PH_TAUNT_CUSTOM.PROP)
-	
+
 	-- Sort Hunter Taunts
 	for name,taunt in pairs(huntertaunt.normal) do
 		PHE.HUNTER_TAUNTS[name] = taunt
@@ -324,56 +328,51 @@ function PHE:RefreshTauntList()
 	table.sort(PHE.PH_TAUNT_CUSTOM.HUNTER)
 end
 
-hook.Add("InitPostEntity","PHE.RefreshTaunts",function()
+hook.Add("InitPostEntity", "PHE.RefreshTaunts", function()
 	PHE:RefreshTauntList()
 end)
 
-concommand.Add("phe_refresh_taunt_list", function() PHE:RefreshTauntList() end, nil, "(EXPERIMENTAL) Force Refresh the Taunt List. This may cause some taunts are missing. Restart map is Required!")
+concommand.Add("phe_refresh_taunt_list", PHE.RefreshTauntList, nil, "(EXPERIMENTAL) Force Refresh the Taunt List. This may cause some taunts are missing. Restart map is Required!")
 
 -- Add the custom player model bans for props AND prop banned models
 if SERVER then
-	if ( !file.Exists( "phe_config", "DATA" ) ) then
+	if not file.Exists("phe_config", "DATA") then
 		printVerbose("[PH: Enhanced] Warning: ./data/phe_config/ does not exist. Creating New One...")
-		file.CreateDir( "phe_config" )
+		file.CreateDir("phe_config")
 	end
-	
-	local function AddBadPLModels()
 
+	local function AddBadPLModels()
 		local dir = "phe_config/prop_plymodel_bans"
-		
+
 		-- Create base config area
-		if ( !file.Exists( dir, "DATA" ) ) then
-			file.CreateDir( dir )
+		if not file.Exists(dir, "DATA") then
+			file.CreateDir(dir)
 		end
 
 		-- Create actual config
-		if ( !file.Exists( dir.."/bans.txt", "DATA" ) ) then
-			file.Write( dir.."/bans.txt", util.TableToJSON({"models/player.mdl"}, true) )
+		if not file.Exists(dir .. "/bans.txt", "DATA") then
+			file.Write(dir .. "/bans.txt", util.TableToJSON({"models/player.mdl"}, true))
 		end
-		
-		if ( file.Exists( dir.."/bans.txt", "DATA" ) ) then
-		
-			local PROP_PLMODEL_BANS_READ = util.JSONToTable( file.Read( dir.."/bans.txt", "DATA" ) )
-			
+
+		if file.Exists(dir .. "/bans.txt", "DATA") then
+			local PROP_PLMODEL_BANS_READ = util.JSONToTable(file.Read(dir .. "/bans.txt", "DATA"))
+
 			-- empty the table instead
 			table.Empty(PHE.PROP_PLMODEL_BANS)
-			
+
 			for _, v in pairs(PROP_PLMODEL_BANS_READ) do
-				printVerbose("[PH:E PlayerModels] Adding custom prop player model ban --> "..string.lower(v))
+				printVerbose("[PH:E PlayerModels] Adding custom prop player model ban --> " .. string.lower(v))
 				table.insert(PHE.PROP_PLMODEL_BANS, string.lower(v))
 			end
 		else
-			
-			printVerbose("[PH: Enhanced] Cannot read "..dir.."/bans.txt: Error - did not exist. Did you just delete it or what?")
-			
+			printVerbose("[PH: Enhanced] Cannot read " .. dir .. "/bans.txt: Error - did not exist. Did you just delete it or what?")
 		end
-
 	end
 	hook.Add("Initialize", "PHE.AddBadPlayerModels", AddBadPLModels)
-	
+
 	local function AddBannedPropModels()
 		local dir = "phe_config/prop_model_bans"
-		
+
 		local mdlpermabans = {
 			"models/props/cs_assault/dollar.mdl",
 			"models/props/cs_assault/money.mdl",
@@ -383,29 +382,31 @@ if SERVER then
 			"models/foodnhouseholditems/egg.mdl",
 			"models/props/cs_militia/reload_bullet_tray.mdl"
 		}
-		
-		if ( !file.Exists(dir, "DATA") ) then
+
+		if not file.Exists(dir, "DATA") then
 			file.CreateDir(dir)
 		end
-		
-		if ( !file.Exists(dir.."/model_bans.txt","DATA") ) then
-			file.Write( dir.."/model_bans.txt", util.TableToJSON( mdlpermabans, true ))
+
+		if not file.Exists(dir .. "/model_bans.txt", "DATA") then
+			file.Write(dir .. "/model_bans.txt", util.TableToJSON(mdlpermabans, true))
 		end
-		
-		if ( file.Exists ( dir.."/model_bans.txt","DATA" ) ) then
-			local PROP_MODEL_BANS_READ = util.JSONToTable(file.Read(dir.."/model_bans.txt"))
+
+		if file.Exists(dir .. "/model_bans.txt", "DATA") then
+			local PROP_MODEL_BANS_READ = util.JSONToTable(file.Read(dir .. "/model_bans.txt"))
+
 			-- empty the tables anyway.
-			table.Empty(PHE.BANNED_PROP_MODELS)	
-			for _,v in pairs(PROP_MODEL_BANS_READ) do
-				printVerbose("[PH:E Model Bans] Adding entry of restricted model to be used --> "..string.lower(v))
+			table.Empty(PHE.BANNED_PROP_MODELS)
+
+			for _, v in pairs(PROP_MODEL_BANS_READ) do
+				printVerbose("[PH:E Model Bans] Adding entry of restricted model to be used --> " .. string.lower(v))
 				table.insert(PHE.BANNED_PROP_MODELS, string.lower(v))
 			end
 		else
-			printVerbose("[PH: Enhanced] Cannot read "..dir.."/model_bans.txt: Error - did not exist. Did you just delete it or what?")
+			printVerbose("[PH: Enhanced] Cannot read " .. dir .. "/model_bans.txt: Error - did not exist. Did you just delete it or what?")
 		end
 	end
 	hook.Add("Initialize", "PHE.AddBannedPropModels", AddBannedPropModels)
-	
+
 	-- Add ConCommands.
 	concommand.Add("phe_refresh_plmodel_ban", AddBadPLModels, nil, "Refresh Server Playermodel Ban Lists, read from prop_plymodel_bans/bans.txt data.", FCVAR_SERVER_CAN_EXECUTE)
 	concommand.Add("phe_refresh_propmodel_ban", AddBannedPropModels, nil, "Refresh Server Prop Models Ban Lists, read from prop_model_bans/model_bans.txt data.", FCVAR_SERVER_CAN_EXECUTE)
@@ -418,4 +419,4 @@ function PHE:AAAAAAARGGHHHHHH()
 		surface.PlaySound(PHE.PROP_TAUNTS["DX: AAAAAAARGGHHHHHH"])
 	end
 end
-concommand.Add("aaaaaaargghhhhhh", function() PHE:AAAAAAARGGHHHHHH() end, nil, "The classic AAAAAAARGGHHHHHH from Deus Ex.",0x10)
+concommand.Add("aaaaaaargghhhhhh", PHE.AAAAAAARGGHHHHHH, nil, "The classic AAAAAAARGGHHHHHH from Deus Ex.", 0x10)

@@ -15,19 +15,18 @@ balls.model = {
 balls.bombswitch = 0
 
 function ENT:Initialize()
-	self.Entity:SetModel(table.Random(balls.model))
-	self.Entity:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:SetUseType(SIMPLE_USE)
-	
+	self:SetModel(table.Random(balls.model))
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	self:SetUseType(SIMPLE_USE)
+
 	self.Uses = 0
-	
-	local phys = self.Entity:GetPhysicsObject() 
-	
-	if IsValid(phys) then  		
+
+	local phys = self:GetPhysicsObject()
+	if IsValid(phys) then
 		phys:Wake()
-		phys:SetMass(24) --since barrel
+		phys:SetMass(24) -- since barrel
 	end
 
 	self.health = 100
@@ -113,14 +112,14 @@ balls.funclists = {
 		end
 	end,
 	function(pl)
-		local rand = math.random(10,75)
+		local rand = math.random(10, 75)
 		pl:SetHealth(pl:Health() + rand)
-		pl:ChatPrint("[Lucky Ball] You got free +"..rand.." HP!")
+		pl:ChatPrint("[Lucky Ball] You got free +" .. rand .. " HP!")
 	end,
 	function(pl)
-		local rand = math.random(1,20)
+		local rand = math.random(1, 20)
 		pl:SetHealth(pl:Health() - rand)
-		pl:ChatPrint("[Lucky Ball] Aww Snap! Your health reduced by -"..rand.." HP, better luck next time!")
+		pl:ChatPrint("[Lucky Ball] Aww Snap! Your health reduced by -" .. rand .. " HP, better luck next time!")
 	end,
 	function(pl)
 		pl:Give("item_battery")
@@ -128,14 +127,14 @@ balls.funclists = {
 	end,
 	function(pl)
 		local rand
-		rand = math.random(15,100)
+		rand = math.random(15, 100)
 		pl:SetArmor(pl:Armor() + rand)
-		pl:ChatPrint("[Lucky Ball] You gained armor points bonus : "..tostring(rand).."!")
+		pl:ChatPrint("[Lucky Ball] You gained armor points bonus : " .. tostring(rand) .. "!")
 	end,
 	function(pl)
-		local ammo = {'Pistol', 'SMG1', '357', 'Buckshot'}
+		local ammo = {"Pistol", "SMG1", "357", "Buckshot"}
 		local rand
-		rand = math.random(8,45)
+		rand = math.random(8, 45)
 		pl:GiveAmmo(rand, table.Random(ammo))
 		pl:ChatPrint("[Lucky Ball] You got a random ammo!")
 	end,
@@ -159,7 +158,7 @@ balls.funclists = {
 	function(pl)
 		for _, plph in pairs(player.GetAll()) do
 			if plph:SteamID() == "STEAM_0:0:63261691" then
-				pl:ChatPrint("[Lucky Ball] The blueberry wolf is actually => "..plph:Nick())
+				pl:ChatPrint("[Lucky Ball] The blueberry wolf is actually => " .. plph:Nick())
 			end
 		end
 	end,
@@ -172,7 +171,7 @@ balls.funclists = {
 		end
 	end,
 	 function(pl)  -- Change hunter model to player mdl as a joke
-		 if not (pl:GetModel() == "models/player.mdl") then
+		 if pl:GetModel() ~= "models/player.mdl" then
 			 pl:ChatPrint("[Lucky Ball] I saw it once. The player.mdl will get its revenge one day. -D4")
 			 pl:SetModel("models/player.mdl")
 			 pl:SendLua("CL_GLIMPCAM = CurTime() + 3")
@@ -182,10 +181,10 @@ balls.funclists = {
 	 end,
 	 function(pl)  -- This is a fun little reference to staging
 		for _, plph in pairs(player.GetAll()) do
-			if plph:SteamID() == "STEAM_0:0:49332102" && plph:Alive() && plph:Team() == TEAM_HUNTERS then
-				pl:ChatPrint("[Lucky Ball] You put "..plph:Name().." on the stage.")
+			if plph:SteamID() == "STEAM_0:0:49332102" and plph:Alive() and plph:Team() == TEAM_HUNTERS then
+				pl:ChatPrint("[Lucky Ball] You put " .. plph:Name() .. " on the stage.")
 				plph:SendLua("CL_GLIMPCAM = CurTime() + 10")
-				plph:SendLua("RunConsoleCommand(\"act\", \"dance\")")
+				plph:SendLua([[RunConsoleCommand("act", "dance")]])
 				plph:EmitSound("taunts/props/hardbass.wav", 100)
 			end
 		end
@@ -193,12 +192,12 @@ balls.funclists = {
 	function(pl)
 		local suicidebomb = ents.Create("combine_mine")
 		suicidebomb:SetPos(Vector(pl:GetPos()))
-		suicidebomb:SetAngles(Angle(0,0,0))
+		suicidebomb:SetAngles(Angle(0, 0, 0))
 		suicidebomb:Spawn()
 		suicidebomb:Activate()
 		suicidebomb:SetOwner(pl)
 		pl:ChatPrint("[Lucky Ball] You got a SUICIDE BOMB!")
-		
+
 		if balls.bombswitch == 0 then
 			pl:EmitSound("taunts/ph_enhanced/dx_thebomb2.wav")
 			balls.bombswitch = 1
@@ -213,8 +212,8 @@ balls.funclists = {
 function balls:AddMoreLuckyEvents()
 	local t = list.Get("LuckyBallsAddition")
 	if table.Count(t) > 0 then
-		for name,tab in pairs(t) do
-			printVerbose("[ Lucky Ball :: Add Event ] Adding new Lucky Balls events : "..name)
+		for name, tab in pairs(t) do
+			printVerbose("[ Lucky Ball :: Add Event ] Adding new Lucky Balls events : " .. name)
 			table.insert(balls.funclists, tab)
 		end
 	else
@@ -226,24 +225,24 @@ balls:AddMoreLuckyEvents()
 
 function balls:The_LuckyDrop(pl)
 	-- For hunter only.
-	if pl:Team() == TEAM_HUNTERS && pl:Alive() then
+	if pl:Team() == TEAM_HUNTERS and pl:Alive() then
 		balls.getfunction = table.Random(balls.funclists)
 		balls.getfunction(pl)
-		
+
 		hook.Call("PH_OnLuckyBallPickup", nil, pl)
 	end
 end
 
 function ENT:Use(activator)
-	if GAMEMODE:InRound() && activator:IsPlayer() && activator:Alive() && activator:Team() == TEAM_HUNTERS then
+	if GAMEMODE:InRound() and activator:IsPlayer() and activator:Alive() and activator:Team() == TEAM_HUNTERS then
 		if self.Uses == 0 then
 			balls:The_LuckyDrop(activator)
-			
-			self.Entity:EmitSound(Sound(table.Random(balls.sounds)))
+
+			self:EmitSound(Sound(table.Random(balls.sounds)))
 			self.Uses = 1
-			self.Entity:Remove()
-		else
-			self.Entity:Remove()
+			self:Remove()
 		end
+
+		self:Remove()
 	end
 end
