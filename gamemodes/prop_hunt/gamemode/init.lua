@@ -1,5 +1,5 @@
--- Ship
-resource.AddWorkshop("2048645528")
+-- Gamemode
+resource.AddWorkshop("1758906555")
 
 -- Send required file to clients
 AddCSLuaFile("sh_init.lua")
