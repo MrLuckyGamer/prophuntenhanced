@@ -12,7 +12,7 @@ Daha Fazla Yardım Görmek İçin 'Nesne Avı Menüsü'ne tıklayın!
 		Değişiklikler:
 		- Takım dengesi iyileştirildi
 		- Sıkışmaktan kurtulma tuşu
-		- Alay ses perdelemesi
+		- Alay sesi perdeleme
 		- ve daha fazlası!
 	]]
 
@@ -86,7 +86,7 @@ LANG.DERMA = {}
 -- Team selection screen (F2)
 LANG.DERMA.TEAMSELECT = "Takım Seç"
 
--- F1 screeen
+-- F1 screen
 LANG.DERMA.RTV = "Harita Değişmek İçin Oyla (RTV)"
 LANG.DERMA.PHMENU = "Nesne Avı Menüsü"
 LANG.DERMA.CHANGETEAM = "Takım Değiş"
@@ -114,11 +114,17 @@ LANG.CHAT.SWAPBALANCEYOU = "Mükemmel dengeyi sağlamak için aktarıldın." -- 
 LANG.CHAT.RANDOM_SPECTATORS = {
 	"takımına oturup izlemek için geçti.",
 	"takımına takılmalarını izlemek için geçti.",
-	"takımına ne olup bittiğini izlemek için geçti.",
+ "takımına ne olup bittiğini izlemek için geçti.",
+ "takımına oyunu izlemek için geçti.",
 	"takımına dinlenmek için geçti.",
+ "takımına bilinmeyen bir sebepten dolayı geçti.",
+ "takımına meşgul olduğu için geçti.",
+ "takımına boşta olduğu için geçti.",
+ "takımına canı sıkıldığı için geçti.",
+ "takımına izleyici düğmesini test etmek için geçti.",
 }
 
--- PHE Menu (F1 > PHE Menu)
+-- PHE Menü (F1 > PHE Menü)
 LANG.PHEMENU = {}
 
 
@@ -172,7 +178,7 @@ LANG.PHEMENU.ADMINS.ph_allow_prop_pickup = "Küçük nesnelerle etkileşime izin
 LANG.PHEMENU.ADMINS.ph_notice_prop_rotation = "Her doğulduğunda 'Nesne Dönme' bildirimini göster"
 LANG.PHEMENU.ADMINS.ph_prop_camera_collisions = "Nesne kamerasının duvarlara değmesini etkinleştir"
 LANG.PHEMENU.ADMINS.ph_freezecam = "Nesne takımı için Serbest Kamera özelliğini etkinleştir"
-LANG.PHEMENU.ADMINS.ph_prop_collision = "Nesne takımındaki oyuncuların birbirine değebilmesini etkinleştir."
+LANG.PHEMENU.ADMINS.ph_prop_collision = "Nesne takımındaki oyuncuların birbirine değebilmesini etkinleştir"
 LANG.PHEMENU.ADMINS.ph_swap_teams_every_round = "Her raunt takım değiştir - Bu ayar devre dışı bırakılırsa takımlar olduğu gibi kalacaktır."
 LANG.PHEMENU.ADMINS.ph_hunter_fire_penalty = "Avcı can cezası"
 LANG.PHEMENU.ADMINS.ph_hunter_kill_bonus = "Avcı leş bonusu"
@@ -182,11 +188,11 @@ LANG.PHEMENU.ADMINS.ph_hunter_blindlock_time = "Avcı yumma süresi (Saniye)"
 LANG.PHEMENU.ADMINS.ph_round_time = "Oyun raunt süresi (Saniye)"
 LANG.PHEMENU.ADMINS.ph_rounds_per_map = "Harita Başı Toplam Oyun Raundu"
 LANG.PHEMENU.ADMINS.ph_enable_lucky_balls = "Şanslı Topların kırılabilir nesnelerde çıkmasına izin ver (Çıkma şansı %8)"
-LANG.PHEMENU.ADMINS.ph_enable_devil_balls = "Şeytan Toplarının avcı öldüğünde çıkmasına izin ver (Çıkma şansı 70%)"
+LANG.PHEMENU.ADMINS.ph_enable_devil_balls = "Şeytan Toplarının avcı öldüğünde çıkmasına izin ver (Çıkma şansı %70)"
 LANG.PHEMENU.ADMINS.ph_waitforplayers = "Oyuna başlamak için oyuncuları bekle"
 LANG.PHEMENU.ADMINS.ph_min_waitforplayers = "Oyunun başlaması için gereken en az oyuncu sayısı (varsayılan: 1)"
 
-LANG.PHEMENU.ADMINS.TAUNTMODES = "Enable Custom Taunt."
+LANG.PHEMENU.ADMINS.TAUNTMODES = "Özel Alayları Etkinleştir."
 LANG.PHEMENU.ADMINS.TAUNTMODE0 = "Mod [0/F3]: Rastgele Alay"
 LANG.PHEMENU.ADMINS.TAUNTMODE1 = "Mod [1/C]: Özel Alay"
 LANG.PHEMENU.ADMINS.TAUNTMODE2 = "Mod [2]: Her İkiside"
@@ -223,7 +229,7 @@ LANG.PHEMENU.ABOUT.TAB = "PHE Hakkında"
 LANG.PHEMENU.ABOUT.DONATE = "PH:E projesine bağış yap"
 LANG.PHEMENU.ABOUT.HOME = "PH:E Resmi Ana Sayfası"
 LANG.PHEMENU.ABOUT.GIT = "GitHub Dizini"
-LANG.PHEMENU.ABOUT.WIKI = "PH:E Viki & Rehber"
+LANG.PHEMENU.ABOUT.WIKI = "PH:E Viki ve Rehber"
 LANG.PHEMENU.ABOUT.PLUGINS = "PH:E Eklentiler"
 
 
@@ -240,23 +246,23 @@ LANG.FORCEHUNTERASPROP.ALREADY = " zaten bir sonraki raunt için Nesne olarak be
 
 LANG.UNSTUCK = {}
 LANG.UNSTUCK.YOURE_UNSTUCK = "Artık kurtulmuş olmalısın!"
-LANG.UNSTUCK.BAD_SPAWNPOINT = "Hata: En yakın doğma noktası seni yeniden sıkıştırabilir. Eğer sıkışırsan, yeniden kurtulmayı deneyin."
+LANG.UNSTUCK.BAD_SPAWNPOINT = "Hata: En yakın doğma noktası seni yeniden sıkıştırabilir. Sıkışırsanız, yeniden kurtulmayı deneyin."
 LANG.UNSTUCK.RESCUE_SPAWNPOINT = "Bu doğma noktası aşırı yakın, hala sıkışmış olabilirsin. Sıkışmışsanız yeniden deneyin."
 LANG.UNSTUCK.NO_SPAWNPOINTS = "Bilinmeyen nedenlerden ötürü, doğma noktası bulunamadı. Önlem olarak, (0, 0, 0)a ışınlanacaksanız. Sıkışmanıza çok yüksek bir şans var, eğer sıkışırsanız tekrar deneyin."
 LANG.UNSTUCK.PLEASE_WAIT = "Lütfen her bir sıkışmaktan kurtulma denemesinde %d saniye bekleyin."
 LANG.UNSTUCK.NOT_ON_GROUND = "Zeminde değil, kontrol ediliyor..."
 LANG.UNSTUCK.NOT_STUCK_JITTER = "Sıkışmamışsınız. Eğer gerçekten sıkıştıysanız, Nesneniniz hareket etmeyi veya titremeyi bırakana kadar bekleyin (ALT'a basmayı deneyin) ve yeniden deneyin."
-LANG.UNSTUCK.NOT_STUCK_TOOBAD = "Sıkışmamışsınız. Eğer gerçekten sıkıştıysanız, üzgünüm, raunt sonuna kadar beklemek zorundasın.."
+LANG.UNSTUCK.NOT_STUCK_TOOBAD = "Sıkışmamışsınız. Eğer gerçekten sıkıştıysanız, üzgünüm, raunt sonuna kadar beklemek zorundasınız.."
 LANG.UNSTUCK.CANNOT_FIND_SPOT = "Sizin hareket edebileceğiniz bir yer bulunamadı, en yakın doğma noktasına ışınlanılıyor."
 LANG.UNSTUCK.SPAWNPOINTS_DISABLED = "Doğma noktasına ışınlanacaktın, ama bu sunucu yumma süresinin dışında izin vermiyor. Üzgünüz!"
 
 LANG.PHEMENU.PLAYER.ph_cl_unstuck_key = "Sıkışmaktan Kurtulma Tuşu"
 
 LANG.PHEMENU.ADMINS.ph_tauntpitch_allowed = "Oyuncuların alay perdeleme işlevini kullanmasına izin ver"
-LANG.PHEMENU.ADMINS.ph_tauntpitch_min = "Minimum alay perdelemesi (varsayılan değer 60)"
-LANG.PHEMENU.ADMINS.ph_tauntpitch_max = "Maksimum alay perdelemesi (varsayılan değer 180)"
+LANG.PHEMENU.ADMINS.ph_tauntpitch_min = "Minimum alay perdelemesi (Varsayılan: 60)"
+LANG.PHEMENU.ADMINS.ph_tauntpitch_max = "Maksimum alay perdelemesi (Varsayılan: 180)"
 LANG.PHEMENU.ADMINS.ph_originalteambalance = "PH:E'nin kendi takım dengeleme özelliğini kullan (takım ilgili aşağıdaki tüm ayarları devre dışı bırakır)"
-LANG.PHEMENU.ADMINS.ph_originalteambalance_uncheck = "Gelişmiş takım dengesi ayarlarına erişmek için önceki onay kutusunun işaretini kaldırın.."
+LANG.PHEMENU.ADMINS.ph_originalteambalance_uncheck = "Gelişmiş takım dengesi ayarlarına erişmek için önceki onay kutusunun işaretini kaldırın."
 LANG.PHEMENU.ADMINS.ph_forcespectatorstoplay = "Takımları dengelerken izleyicileri oynaması için zorla"
 LANG.PHEMENU.ADMINS.ph_preventconsecutivehunting = "Oyuncuların arka arkaya iki kez Avcı olmasını engelle (Sadece karma modunda çalışır)"
 LANG.PHEMENU.ADMINS.ph_huntercount = "Avcı sayısı (0 = otomatik)"
