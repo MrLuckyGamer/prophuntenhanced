@@ -12,7 +12,7 @@ Daha Fazla Yardım Görmek İçin 'Nesne Avı Menüsü'ne tıklayın!
 		Değişiklikler:
 		- Takım dengesi iyileştirildi
 		- Sıkışmaktan kurtulma tuşu
-		- Özelletirebilir alay sesi
+		- Alay ses perdelemesi
 		- ve daha fazlası!
 	]]
 
@@ -32,7 +32,7 @@ LANG.HUD.WAIT = "Oyuncular bekleniyor..."
 LANG.HUD.WIN = "%s kazandı!"
 LANG.HUD.DRAW = "Berabere, herkes kaybetti!"
 
-LANG.HUD.BLINDTIME = "Avcıların gözleri %s içinde açılacak ve serbest kalacaklar"
+LANG.HUD.BLINDTIME = "Avcıların gözleri %s içinde açılacak ve serbest kalacaklar."
 LANG.HUD.BLINDEND = "Önüm arkam sağım solum sobe saklanmayan ebe!"
 
 --  Kill text (X killed Y)
@@ -115,7 +115,7 @@ LANG.CHAT.RANDOM_SPECTATORS = {
 	"takımına oturup izlemek için geçti.",
 	"takımına takılmalarını izlemek için geçti.",
 	"takımına ne olup bittiğini izlemek için geçti.",
-	"",
+	"takımına dinlenmek için geçti.",
 }
 
 -- PHE Menu (F1 > PHE Menu)
