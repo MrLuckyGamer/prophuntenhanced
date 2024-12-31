@@ -6,7 +6,7 @@ LANG.Name = "türkçe"
 LANG.NameEnglish = "turkish"
 
 LANG.Help = [[	Gelişmiş Klasik Nesne Avı Oyun Modu.
-Daha Fazla Yardım Görmek İçin 'Nesne Menüsü'ne tıklayın!
+Daha Fazla Yardım Görmek İçin 'Nesne Avı Menüsü'ne tıklayın!
 
 	Sürüm: %s
 		Değişiklikler:
