@@ -5,8 +5,8 @@ LANG.Code = "tr"
 LANG.Name = "türkçe"
 LANG.NameEnglish = "turkish"
 
-LANG.Help = [[	Gelişmiş Klasik Nesne Avı Oyun Modu.
-Daha Fazla Yardım Görmek İçin 'Nesne Avı Menüsü'ne tıklayın!
+LANG.Help = [[	    Gelişmiş Klasik Nesne Avı Oyun Modu.
+Daha Fazla Yardım İçin 'Nesne Avı Menüsü'ne tıklayın!
 
 	Sürüm: %s
 		Değişiklikler:
@@ -87,7 +87,7 @@ LANG.DERMA = {}
 LANG.DERMA.TEAMSELECT = "Takım Seç"
 
 -- F1 screen
-LANG.DERMA.RTV = "Harita Değişmek İçin Oyla (RTV)"
+LANG.DERMA.RTV = "Harita Değişmek İçin Oyla"
 LANG.DERMA.PHMENU = "Nesne Avı Menüsü"
 LANG.DERMA.CHANGETEAM = "Takım Değiş"
 
@@ -114,14 +114,14 @@ LANG.CHAT.SWAPBALANCEYOU = "Mükemmel dengeyi sağlamak için aktarıldın." -- 
 LANG.CHAT.RANDOM_SPECTATORS = {
 	"takımına oturup izlemek için geçti.",
 	"takımına takılmalarını izlemek için geçti.",
- "takımına ne olup bittiğini izlemek için geçti.",
- "takımına oyunu izlemek için geçti.",
+ 	"takımına ne olup bittiğini izlemek için geçti.",
+	"takımına oyunu izlemek için geçti.",
 	"takımına dinlenmek için geçti.",
- "takımına bilinmeyen bir sebepten dolayı geçti.",
- "takımına meşgul olduğu için geçti.",
- "takımına boşta olduğu için geçti.",
- "takımına canı sıkıldığı için geçti.",
- "takımına izleyici düğmesini test etmek için geçti.",
+ 	"takımına bilinmeyen bir sebepten dolayı geçti.",
+ 	"takımına meşgul olduğu için geçti.",
+ 	"takımına boşta olduğu için geçti.",
+ 	"takımına canı sıkıldığı için geçti.",
+ 	"takımına izleyici düğmesini test etmek için geçti.",
 }
 
 -- PHE Menü (F1 > PHE Menü)
