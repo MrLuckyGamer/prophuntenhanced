@@ -11,7 +11,9 @@ Prop Hunt: Enhanced is an improved version of the classic Prop Hunt Gamemode. Th
 This gamemode was contributed to the original Prop Hunt as a fix for the March 2015 update (which completely broke the original version) and includes viewmodel fix additions. The classic version may no longer be maintained.
 
 ## Available Links
-[**Wiki: Help & FAQs**](https://prophuntenhanced.xyz/wiki/index.php)
+[**Website**](https://prophuntenhanced.xyz)
+
+[**Wiki: Help & FAQs**](https://wiki.prophuntenhanced.xyz)
 
 [**Downloads**](https://prophuntenhanced.xyz/download)
 
