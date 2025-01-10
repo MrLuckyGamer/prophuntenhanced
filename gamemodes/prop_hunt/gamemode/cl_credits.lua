@@ -28,7 +28,7 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 		lhome	= "https://prophuntenhanced.xyz/",
 		ldonate = GAMEMODE.DONATEURL,
 		lgit	= "https://github.com/MrLuckyGamer/prophuntenhanced",
-		lwiki	= "https://prophuntenhanced.xyz/wiki/index.php",
+		lwiki	= "https://wiki.prophuntenhanced.xyz/",
 		lplugins = "https://prophuntenhanced.xyz/plugins"
 	}
 
