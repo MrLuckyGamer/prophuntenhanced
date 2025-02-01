@@ -104,7 +104,7 @@ LANG.PHEMENU = {}
 
 
 LANG.PHEMENU.HELP = {}
-LANG.PHEMENU.HELP.TAB = "救命"
+LANG.PHEMENU.HELP.TAB = "帮助"
 
 LANG.PHEMENU.MUTE = {}
 LANG.PHEMENU.MUTE.TAB = "静音"
@@ -118,7 +118,7 @@ LANG.PHEMENU.PLAYER.ph_cl_halos = "切换选择一个物品时的周围光效"
 LANG.PHEMENU.PLAYER.ph_cl_pltext = "将玩家名字显示在他们的头顶上 (字会穿过墙壁)"
 LANG.PHEMENU.PLAYER.ph_cl_endround_sound = "播放回合结束提示音"
 LANG.PHEMENU.PLAYER.ph_cl_autoclose_taunt = "双击嘲讽窗口时自动关闭"
-LANG.PHEMENU.PLAYER.ph_cl_spec_hunter_line = "在猎人上画一条线，这样我们就可以在旁观者模式中看到他们的瞄准方向."
+LANG.PHEMENU.PLAYER.ph_cl_spec_hunter_line = "在猎人身上画一条线，这样我们就可以在旁观者模式中看到他们的瞄准方向."
 LANG.PHEMENU.PLAYER.cl_enable_luckyballs_icon = "启用“幸运球”图标，以便在它们生成后显示"
 LANG.PHEMENU.PLAYER.cl_enable_devilballs_icon = "启用“恶魔球”图标，以便在它们生成后显示"
 LANG.PHEMENU.PLAYER.ph_cl_taunt_key = "随机播放嘲讽按钮"
@@ -180,7 +180,7 @@ LANG.PHEMENU.MAPVOTE.SETTINGS = "地图投票设置"
 
 LANG.PHEMENU.MAPVOTE.mv_allowcurmap = "允许对当前地图进行投票"
 LANG.PHEMENU.MAPVOTE.mv_cooldown = "启用地图冷却期间投票"
-LANG.PHEMENU.MAPVOTE.mv_use_ulx_votemaps = "是否使用 ULX Mapvote 中的地图列表? 如果没有，将使用默认maps/*.bsp."
+LANG.PHEMENU.MAPVOTE.mv_use_ulx_votemaps = "是否使用 ULX Mapvote 中的地图列表? 如果不使用，将使用默认maps/*.bsp."
 LANG.PHEMENU.MAPVOTE.mv_maplimit = "在 MapVote 中显示的地图数量."
 LANG.PHEMENU.MAPVOTE.mv_timelimit = "投票时默认地图投票的持续秒数."
 LANG.PHEMENU.MAPVOTE.mv_mapbeforerevote = "地图重新出现所需的变更次数"
