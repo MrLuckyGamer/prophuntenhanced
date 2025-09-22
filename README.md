@@ -104,12 +104,20 @@ This is my modified version of Wolvins Prophunt: Enhanced, due to Wolvins termin
 
 Credit goes to the original authors of the gamemodes and those who made Prop Hunt compatible with GMOD 13.
 
-Originally written and released by Darkimmortal (TF2)
+Originally written and released by UNKNOWN for Counter-Strike: Source (CSS)
+
+Originally written and released by Darkimmortal on Team Fortress 2 (TF2)
 
 Originally ported to GMod: AMT
 
-First fix for GMod 13: Leleudk
+First fix for GMod 13: LeleuDK
 
 Enhanced, fixed, and published: Kowalski7cc
 
-Major Enhancement: Wolvindra-Vinzuerio, D4UNKNOWNFOX2010, Lucky
+Major Enhancement: Wolvindra-Vinzuerio, Jai "Choccy" Fox, Lucky
+
+More Enhancements and native language options from Fafy
+
+Built in Optimisations and stuck logic by Me
+
+And Major Enhancements updates and continued support from myself Lucky (again)
