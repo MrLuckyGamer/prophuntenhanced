@@ -183,16 +183,18 @@ function GM:VoteForChange(ply)
 	ply:SetNWBool("WantsVote", true)
 
 	local VotesNeeded = GAMEMODE:GetVotesNeededForChange()
-	local NeedTxt = ""
-	if VotesNeeded > 0 then
-		NeedTxt = ", Color(80, 255, 50), [[ (need " .. VotesNeeded .. " more) ]] "
-	end
 
 	if CurTime() < GetConVar("fretta_votegraceperiod"):GetInt() then -- can't vote too early on
 		local timediff = math.Round(GetConVar("fretta_votegraceperiod"):GetInt() - CurTime())
-		BroadcastLua("chat.AddText(Entity(" .. ply:EntIndex() .. "), Color( 255, 255, 255 ), [[ voted to change the gamemode]])")
+		net.Start("Fretta_VotedForChange")
+			net.WriteEntity(ply)
+			net.WriteInt(0, 16)
+		net.Broadcast()
 	else
-		BroadcastLua("chat.AddText(Entity(" .. ply:EntIndex() .. "), Color( 255, 255, 255 ), [[ voted to change the gamemode]] " .. NeedTxt .. ")")
+		net.Start("Fretta_VotedForChange")
+			net.WriteEntity(ply)
+			net.WriteInt(math.max(0, VotesNeeded), 16)
+		net.Broadcast()
 	end
 
 	Msg(ply:Nick() .. " voted to change the gamemode\n")
@@ -218,7 +220,8 @@ function GM:StartGamemodeVote()
 		if fretta_voting:GetBool() then
 			if #g_PlayableGamemodes >= 2 then
 				GAMEMODE:ClearPlayerWants()
-				BroadcastLua("GAMEMODE:ShowGamemodeChooser()")
+				net.Start("Fretta_ShowGamemodeChooser")
+				net.Broadcast()
 				timer.Simple(fretta_votetime:GetFloat(), function() GAMEMODE:FinishGamemodeVote() end)
 				SetGlobalFloat("VoteEndTime", CurTime() + fretta_votetime:GetFloat())
 			else
@@ -240,7 +243,9 @@ function GM:StartMapVote()
 		return GAMEMODE:FinishMapVote(true)
 	end
 
-	BroadcastLua("GAMEMODE:ShowMapChooserForGamemode(\"" .. GAMEMODE.WinningGamemode .. "\")")
+	net.Start("Fretta_ShowMapChooserForGamemode")
+		net.WriteString(GAMEMODE.WinningGamemode)
+	net.Broadcast()
 	timer.Simple(fretta_votetime:GetFloat(), function() GAMEMODE:FinishMapVote() end)
 	SetGlobalFloat("VoteEndTime", CurTime() + fretta_votetime:GetFloat())
 end
@@ -287,7 +292,9 @@ function GM:FinishGamemodeVote()
 	GAMEMODE:ClearPlayerWants()
 
 	-- Send bink bink notification
-	BroadcastLua("GAMEMODE:GamemodeWon('" .. GAMEMODE.WinningGamemode .. "')")
+	net.Start("Fretta_GamemodeWon")
+		net.WriteString(GAMEMODE.WinningGamemode)
+	net.Broadcast()
 
 	-- Start map vote..
 	timer.Simple(2, function() GAMEMODE:StartMapVote() end)
@@ -298,7 +305,10 @@ function GM:FinishMapVote()
 	GAMEMODE:ClearPlayerWants()
 
 	-- Send bink bink notification
-	BroadcastLua("GAMEMODE:ChangingGamemode('" .. GAMEMODE.WinningGamemode .. "', '" .. GAMEMODE.WinningMap .. "')")
+	net.Start("Fretta_ChangingGamemode")
+		net.WriteString(GAMEMODE.WinningGamemode)
+		net.WriteString(GAMEMODE.WinningMap)
+	net.Broadcast()
 
 	-- Start map vote?
 	timer.Simple(3, function() GAMEMODE:ChangeGamemode() end)

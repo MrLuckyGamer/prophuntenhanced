@@ -1,4 +1,4 @@
--- Credit to Awesome guy: D4UNKN0WNMAN :D
+-- Credit to Jai Choccy Fox
 -- Had to place this entity for ph_kleiner maps. for purpose: Anti Exploiting.
 
 AddCSLuaFile("cl_init.lua")

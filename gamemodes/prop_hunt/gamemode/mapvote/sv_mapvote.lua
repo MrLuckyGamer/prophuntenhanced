@@ -31,16 +31,46 @@ else
 	recentmaps = {}
 end
 
+local function GetConVarStringSafe(name, default)
+	local cvar = GetConVar(name)
+	if cvar then
+		return cvar:GetString()
+	end
+
+	printVerbose("[MapVote] ConVar '" .. name .. "' was missing, using default value instead!")
+	return default
+end
+
+local function GetConVarIntSafe(name, default)
+	local cvar = GetConVar(name)
+	if cvar then
+		return cvar:GetInt()
+	end
+
+	printVerbose("[MapVote] ConVar '" .. name .. "' was missing, using default value instead!")
+	return default
+end
+
+local function GetConVarBoolSafe(name, default)
+	local cvar = GetConVar(name)
+	if cvar then
+		return cvar:GetBool()
+	end
+
+	printVerbose("[MapVote] ConVar '" .. name .. "' was missing, using default value instead!")
+	return default
+end
+
 if ConVarExists("mv_maplimit") then
 	printVerbose("[MapVote] Loading ConVars...")
 	MapVote.Config = {
-		MapLimit 		= GetConVar("mv_maplimit"):GetInt(),
-		TimeLimit 		= GetConVar("mv_timelimit"):GetInt(),
-		AllowCurrentMap = GetConVar("mv_allowcurmap"):GetBool(),
-		EnableCooldown 	= GetConVar("mv_cooldown"):GetBool(),
-		MapsBeforeRevote = GetConVar("mv_mapbeforerevote"):GetBool(),
-		RTVPlayerCount 	= GetConVar("mv_rtvcount"):GetInt(),
-		MapPrefixes 	= string.Explode(",", GetConVar("mv_mapprefix"):GetString():lower())
+		MapLimit 		= GetConVarIntSafe("mv_maplimit", MapVoteConfigDefault.MapLimit),
+		TimeLimit 		= GetConVarIntSafe("mv_timelimit", MapVoteConfigDefault.TimeLimit),
+		AllowCurrentMap = GetConVarBoolSafe("mv_allowcurmap", MapVoteConfigDefault.AllowCurrentMap),
+		EnableCooldown 	= GetConVarBoolSafe("mv_cooldown", MapVoteConfigDefault.EnableCooldown),
+		MapsBeforeRevote = GetConVarIntSafe("mv_mapbeforerevote", MapVoteConfigDefault.MapsBeforeRevote),
+		RTVPlayerCount 	= GetConVarIntSafe("mv_rtvcount", MapVoteConfigDefault.RTVPlayerCount),
+		MapPrefixes 	= string.Explode(",", GetConVarStringSafe("mv_mapprefix", "ph_"):lower())
 	}
 else
 	MapVote.Config = {}
@@ -48,37 +78,37 @@ end
 
 local conv = {
 	["mv_maplimit"] = function(cvar, old, new)
-		if new and (new ~= nil or new ~= "") then
+		if new and new ~= "" then
 			MapVote.Config.MapLimit = tonumber(new)
 		end
 	end,
 	["mv_timelimit"] = function(cvar, old, new)
-		if new and (new ~= nil or new ~= "") then
+		if new and new ~= "" then
 			MapVote.Config.TimeLimit = tonumber(new)
 		end
 	end,
 	["mv_allowcurmap"] = function(cvar, old, new)
-		if new and (new ~= nil or new ~= "") then
+		if new and new ~= "" then
 			MapVote.Config.AllowCurrentMap = tobool(new)
 		end
 	end,
 	["mv_cooldown"] = function(cvar, old, new)
-		if new and (new ~= nil or new ~= "") then
+		if new and new ~= "" then
 			MapVote.Config.EnableCooldown = tobool(new)
 		end
 	end,
 	["mv_mapbeforerevote"] = function(cvar, old, new)
-		if new and (new ~= nil or new ~= "") then
-			MapVote.Config.MapsBeforeRevote = tobool(new)
+		if new and new ~= "" then
+			MapVote.Config.MapsBeforeRevote = tonumber(new)
 		end
 	end,
 	["mv_rtvcount"] = function(cvar, old, new)
-		if new and (new ~= nil or new ~= "") then
+		if new and new ~= "" then
 			MapVote.Config.RTVPlayerCount = tonumber(new)
 		end
 	end,
 	["mv_mapprefix"] = function(cvar, old, new)
-		if new and (new ~= nil or new ~= "") then
+		if new and new ~= "" then
 			MapVote.Config.MapPrefixes = string.Explode(",", new:lower())
 		end
 	end
@@ -93,7 +123,7 @@ end
 function CoolDownDoStuff()
 	cooldownnum = MapVote.Config.MapsBeforeRevote or 3
 
-	if #recentmaps == cooldownnum then
+	while #recentmaps >= cooldownnum and #recentmaps > 0 do
 		table.remove(recentmaps)
 	end
 

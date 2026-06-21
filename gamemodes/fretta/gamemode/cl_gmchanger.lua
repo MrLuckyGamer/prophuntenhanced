@@ -7,6 +7,45 @@ function RcvPlayableGamemodes(length)
 end
 
 net.Receive("PlayableGamemodes", RcvPlayableGamemodes)
+
+net.Receive("Fretta_VotedForChange", function(length)
+	local ply = net.ReadEntity()
+	local votesNeeded = net.ReadInt(16)
+
+	if not IsValid(ply) then return end
+
+	if votesNeeded > 0 then
+		chat.AddText(ply, Color(255, 255, 255), " voted to change the gamemode", Color(80, 255, 50), " (need " .. votesNeeded .. " more) ")
+	else
+		chat.AddText(ply, Color(255, 255, 255), " voted to change the gamemode")
+	end
+end)
+
+net.Receive("Fretta_ShowGamemodeChooser", function(length)
+	GAMEMODE:ShowGamemodeChooser()
+end)
+
+net.Receive("Fretta_ShowMapChooserForGamemode", function(length)
+	local gmname = net.ReadString()
+	GAMEMODE:ShowMapChooserForGamemode(gmname)
+end)
+
+net.Receive("Fretta_GamemodeWon", function(length)
+	local mode = net.ReadString()
+	GAMEMODE:GamemodeWon(mode)
+end)
+
+net.Receive("Fretta_ChangingGamemode", function(length)
+	local mode = net.ReadString()
+	local map = net.ReadString()
+	GAMEMODE:ChangingGamemode(mode, map)
+end)
+
+net.Receive("Fretta_ShowClassChooser", function(length)
+	local teamid = net.ReadUInt(16)
+	GAMEMODE:ShowClassChooser(teamid)
+end)
+
 local GMChooser = nil
 
 local function GetVoteScreen()

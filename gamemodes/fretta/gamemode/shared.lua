@@ -183,7 +183,12 @@ function GM:PlayerCanJoinTeam(ply, teamid)
 
 	if GAMEMODE:CustomTeamHasEnoughPlayers(teamid, ply) then
 		ply:ChatError("That team is full!")
-		ply:SendLua("GAMEMODE:ShowTeam()")
+
+		if SERVER then
+			net.Start("Fretta_ShowTeam")
+			net.Send(ply)
+		end
+
 		return false
 	end
 

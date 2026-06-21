@@ -6,6 +6,14 @@
 
 util.AddNetworkString("PlayableGamemodes")
 util.AddNetworkString("fretta_teamchange")
+util.AddNetworkString("Fretta_VotedForChange")
+util.AddNetworkString("Fretta_ShowGamemodeChooser")
+util.AddNetworkString("Fretta_ShowMapChooserForGamemode")
+util.AddNetworkString("Fretta_GamemodeWon")
+util.AddNetworkString("Fretta_ChangingGamemode")
+util.AddNetworkString("Fretta_ShowHelp")
+util.AddNetworkString("Fretta_ShowTeam")
+util.AddNetworkString("Fretta_ShowClassChooser")
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
@@ -127,7 +135,8 @@ function GM:PlayerDisconnected(pl)
 end
 
 function GM:ShowHelp(pl)
-	pl:SendLua("GAMEMODE:ShowHelp()")
+	net.Start("Fretta_ShowHelp")
+	net.Send(pl)
 end
 
 function GM:PlayerSpawn(pl)
@@ -278,7 +287,9 @@ function GM:PlayerJoinTeam(ply, teamid)
 				ply:EnableRespawn()
 			end
 
-			ply:SendLua("GAMEMODE:ShowClassChooser( " .. teamid .. " )")
+			net.Start("Fretta_ShowClassChooser")
+				net.WriteUInt(teamid, 16)
+			net.Send(ply)
 			ply:DisableRespawn()
 			ply:SetRandomClass() -- put the player in a VALID class in case they don't choose and get spawned
 

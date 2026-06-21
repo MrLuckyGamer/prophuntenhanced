@@ -286,3 +286,7 @@ function GM:ShowTeam()
 
 	TeamPanel:MakePopup()
 end
+
+net.Receive("Fretta_ShowTeam", function(length)
+	GAMEMODE:ShowTeam()
+end)

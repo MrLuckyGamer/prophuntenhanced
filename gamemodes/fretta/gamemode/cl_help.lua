@@ -159,3 +159,7 @@ function GM:ShowHelp()
     Help:MakePopup()
     Help:NoFadeIn()
 end
+
+net.Receive("Fretta_ShowHelp", function(length)
+    GAMEMODE:ShowHelp()
+end)

@@ -404,3 +404,30 @@ net.Receive("SendChatMessage", function()
 	local text, prefixColor, prefix, msgColor = net.ReadString(), net.ReadColor(), net.ReadString(), net.ReadColor()
 	LocalPlayer():ChatMessage(text, prefixColor, prefix, msgColor)
 end)
+
+-- Plays an arbitrary sound on the client. Replacement for the old/removed Player:SendLua("surface.PlaySound(...)") usage.
+net.Receive("PHE_PlaySound", function()
+	local snd = net.ReadString()
+	surface.PlaySound(snd)
+end)
+
+-- Sets the hunter "glimpse" thirdperson camera duration. Replacement for the old/removed Player:SendLua("CL_GLIMPCAM = ...") usage.
+net.Receive("PHE_GlimpCam", function()
+	local duration = net.ReadFloat()
+	CL_GLIMPCAM = CurTime() + duration
+end)
+
+-- Shows a legacy notification on the client. Replacement for the old/removed Player:SendLua("notification.AddLegacy(...)") usage.
+net.Receive("PHE_ShowNotification", function()
+	local text = net.ReadString()
+	local notifyType = net.ReadUInt(8)
+	local notifyLength = net.ReadUInt(8)
+	notification.AddLegacy(text, notifyType, notifyLength)
+end)
+
+-- Runs a whitelisted console command on the client. Replacement for the old/removed Player:SendLua("RunConsoleCommand(...)") usage.
+net.Receive("PHE_RunConsoleCommand", function()
+	local cmd = net.ReadString()
+	local arg = net.ReadString()
+	RunConsoleCommand(cmd, arg)
+end)

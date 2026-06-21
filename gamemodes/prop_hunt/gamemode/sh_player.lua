@@ -161,6 +161,51 @@ function Player:Blind(bool)
 	end
 end
 
+-- Plays a sound on the client only (no 3D attenuation/radius, just like surface.PlaySound did before).
+function Player:PlaySoundLocal(snd)
+	if not SERVER then return end
+	if not self:IsValid() then return end
+
+	net.Start("PHE_PlaySound")
+		net.WriteString(snd)
+	net.Send(self)
+end
+
+-- Triggers the hunter "glimpse" thirdperson camera for `duration` seconds (see CL_GLIMPCAM in cl_init.lua).
+function Player:GlimpCam(duration)
+	if not SERVER then return end
+	if not self:IsValid() then return end
+
+	net.Start("PHE_GlimpCam")
+		net.WriteFloat(duration)
+	net.Send(self)
+end
+
+-- Shows a legacy top-right notification.AddLegacy popup on the client.
+-- notifyType should be a plain number (NOTIFY_* enums only exist client-side, not on the server):
+--   0 = NOTIFY_GENERIC, 1 = NOTIFY_ERROR, 2 = NOTIFY_UNDO, 3 = NOTIFY_HINT, 4 = NOTIFY_CLEANUP
+function Player:ShowNotification(text, notifyType, notifyLength)
+	if not SERVER then return end
+	if not self:IsValid() then return end
+
+	net.Start("PHE_ShowNotification")
+		net.WriteString(text)
+		net.WriteUInt(notifyType or 0, 8)
+		net.WriteUInt(notifyLength or 6, 8)
+	net.Send(self)
+end
+
+-- Runs a console command on the client (e.g. playing a taunt act, like RunConsoleCommand("act", "dance") used to via SendLua).
+function Player:RunClientConsoleCommand(cmd, arg)
+	if not SERVER then return end
+	if not self:IsValid() then return end
+
+	net.Start("PHE_RunConsoleCommand")
+		net.WriteString(cmd)
+		net.WriteString(arg or "")
+	net.Send(self)
+end
+
 -- Player has locked prop rotation?
 function Player:GetPlayerLockedRot()
 	return self:GetNWBool("PlayerLockedRotation", false)

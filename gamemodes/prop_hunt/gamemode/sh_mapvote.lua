@@ -28,9 +28,9 @@ local convarlist = {
 	{"mv_mapprefix",		"ph_,cs_,de_", { FCVAR_SERVER_CAN_EXECUTE, FCVAR_REPLICATED, FCVAR_ARCHIVE }, 		"Map Prefixes that will be shown under mapvote. Use the following example:\n  \"ph_,cs_,de_\" (Dont forget to use quotation marks!)." }
 }
 
-if not ConVarExists("mv_maplimit") then
-	printVerbose("[MapVote] ConVars initialized!")
-	for _, convars in pairs(convarlist) do
+printVerbose("[MapVote] ConVars initialized!")
+for _, convars in pairs(convarlist) do
+	if not ConVarExists(convars[1]) then
 		CreateConVar(convars[1], convars[2], convars[3], convars[4])
 	end
 end

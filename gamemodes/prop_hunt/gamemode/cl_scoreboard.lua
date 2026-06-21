@@ -1,4 +1,4 @@
-if GAMEMODE && IsValid(GAMEMODE.ScoreboardPanel) then
+if GAMEMODE and IsValid(GAMEMODE.ScoreboardPanel) then
 	GAMEMODE.ScoreboardPanel:Remove()
 end
 
@@ -12,27 +12,48 @@ surface.CreateFont("ScoreboardPlayer", {
 	italic = false
 })
 
+local FONT_SCALE_REF_W = 1920
+local function fontScaleWidth()
+	return math.min(ScrW(), FONT_SCALE_REF_W)
+end
+
 local function createRoboto(s)
 	surface.CreateFont("RobotoHUD-" .. s, {
 		font = "Roboto",
-		size = math.Round(ScrW() / 1000 * s),
+		size = math.Round(fontScaleWidth() / 1000 * s),
 		weight = 700,
 		antialias = true,
 		italic = false
 	})
 	surface.CreateFont("RobotoHUD-L" .. s, {
 		font = "Roboto",
-		size = math.Round(ScrW() / 1000 * s),
+		size = math.Round(fontScaleWidth() / 1000 * s),
 		weight = 500,
 		antialias = true,
 		italic = false
 	})
 end
 
-for i = 1, 50, 1 do
-	createRoboto(i)
+local function createAllRobotoFonts()
+	for i = 1, 50, 1 do
+		createRoboto(i)
+	end
+	createRoboto(8)
 end
-createRoboto(8)
+
+local function rescaleAndRefresh()
+	createAllRobotoFonts()
+
+	if IsValid(GAMEMODE.ScoreboardPanel) then
+		GAMEMODE.ScoreboardPanel:InvalidateLayout(true)
+	end
+end
+
+createAllRobotoFonts()
+
+hook.Add("InitPostEntity", "PHE.BuildRobotoFontsAtCorrectScale", rescaleAndRefresh)
+hook.Add("OnScreenSizeChanged", "PHE.RescaleRobotoFonts", rescaleAndRefresh)
+
 
 function draw.ShadowText(n, f, x, y, c, px, py, shadowColor)
 	draw.SimpleText(n, f, x + 1, y + 1, shadowColor or color_black, px, py)
@@ -45,13 +66,13 @@ local function colMul(color, mul)
 	color.b = math.Clamp(math.Round(color.b * mul), 0, 255)
 end
 
-// local function formatTime(totalSeconds)
-//     local days = math.floor(totalSeconds / 86400)
-//     local hours = math.floor((totalSeconds % 86400) / 3600)
-//     local minutes = math.floor((totalSeconds % 3600) / 60)
+-- local function formatTime(totalSeconds)
+--     local days = math.floor(totalSeconds / 86400)
+--     local hours = math.floor((totalSeconds % 86400) / 3600)
+--     local minutes = math.floor((totalSeconds % 3600) / 60)
 
-//     return days, hours, minutes
-// end
+--     return days, hours, minutes
+-- end
 
 local muted = Material("icon32/muted.png", "noclamp")
 
@@ -77,10 +98,10 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		end
 		draw.RoundedBox(6, 0, 0, w, h, surface.GetDrawColor())
 
-		if IsValid(ply) && ply:IsPlayer() then
+		if IsValid(ply) and ply:IsPlayer() then
 			local s = 4
 
-			if !ply:Alive() then
+			if not ply:Alive() then
 				local iconSize = 32
 				local xPos = s
 				local yPos = h / 2 - iconSize / 5.5
@@ -97,16 +118,16 @@ local function addPlayerItem(self, mlist, ply, pteam)
 
 			local col = Color(220, 220, 220)
 
-			// local time = ply:GetUTimeTotalTime() or 0
-			// local days, hours, minutes, seconds = formatTime(math.floor(time))
+			-- local time = ply:GetUTimeTotalTime() or 0
+			-- local days, hours, minutes, seconds = formatTime(math.floor(time))
 
-			// local timeString = ""
-			// if days > 0 then
-			// 	timeString = timeString .. days .. "d "
-			// end
-			// timeString = timeString .. string.format("%2dh %2dm", hours, minutes)
+			-- local timeString = ""
+			-- if days > 0 then
+			-- 	timeString = timeString .. days .. "d "
+			-- end
+			-- timeString = timeString .. string.format("%2dh %2dm", hours, minutes)
 
-			// draw.ShadowText(timeString, "RobotoHUD-L20", w - 110, 0, col, 2)
+			-- draw.ShadowText(timeString, "RobotoHUD-L20", w - 110, 0, col, 2)
 			draw.ShadowText(ply:Ping(), "RobotoHUD-L20", w - 4, 0, col, 2)
 			draw.ShadowText(ply:Nick(), "RobotoHUD-L20", s, 0, col, 0)
 		end
@@ -132,7 +153,7 @@ local function doPlayerItems(self, mlist, pteam)
 			end
 		end
 
-		if !found then
+		if not found then
 			addPlayerItem(self, mlist, ply, pteam)
 		end
 	end
@@ -140,7 +161,7 @@ local function doPlayerItems(self, mlist, pteam)
 	local del = false
 
 	for t,v in pairs(mlist:GetCanvas():GetChildren()) do
-		if !v.perm && v.ctime != CurTime() then
+		if not v.perm and v.ctime ~= CurTime() then
 			v:Remove()
 			del = true
 		end
@@ -171,7 +192,7 @@ local function makeTeamList(parent, pteam)
 	end
 
 	function pnl:Think()
-		if !self.RefreshWait || self.RefreshWait < CurTime() then
+		if not self.RefreshWait or self.RefreshWait < CurTime() then
 			self.RefreshWait = CurTime() + 0.1
 			doPlayerItems(self, mlist, pteam)
 		end
@@ -228,7 +249,7 @@ local function makeTeamList(parent, pteam)
 	function head:Paint(w, h)
 		draw.ShadowText("Name", "RobotoHUD-15", 4, 0, col, 0)
 		draw.ShadowText("Ping", "RobotoHUD-15", w - 4, 0, col, 2)
-		// draw.ShadowText("PlayTime", "RobotoHUD-15", w - 110, 0, col, 2)
+		-- draw.ShadowText("PlayTime", "RobotoHUD-15", w - 110, 0, col, 2)
 	end
 	mlist:AddItem(head)
 
@@ -241,128 +262,145 @@ function GM:ScoreboardRoundResults(results)
 	menu.ResultsPanel:InvalidateLayout()
 end
 
-function GM:ScoreboardShow()
-	if IsValid(menu) then
-		if GAMEMODE.GameState == 3 then
-			menu:SetVisible(false)
-		else
-			menu:SetVisible(true)
-		end
+local function getScoreboardSize()
+	local SB_FIXED_W, SB_FIXED_H = 1536, 864
+	if ScrW() >= 1920 and ScrH() >= 1080 then
+		return SB_FIXED_W, SB_FIXED_H
 	else
-		menu = vgui.Create("DFrame")
-		GAMEMODE.ScoreboardPanel = menu
-		menu:SetSize(ScrW() * 0.8, ScrH() * 0.8)
-		menu:Center()
-		menu:MakePopup()
-		menu:SetKeyboardInputEnabled(false)
-		menu:SetDeleteOnClose(false)
-		menu:SetDraggable(false)
-		menu:ShowCloseButton(false)
-		menu:SetTitle("")
-		menu:DockPadding(8, 8, 8, 8)
-		function menu:PerformLayout()
-			if IsValid(menu.CopsList) then
-				menu.CopsList:SetWidth((self:GetWide() - 16) * 0.5)
-			end
-		end
-
-		function menu:Paint(w, h)
-			surface.SetDrawColor(36, 36, 36, 220)
-			surface.DrawRect(0, 0, w, h)
-		end
-
-		menu.Credits = vgui.Create("DPanel", menu)
-		menu.Credits:Dock(TOP)
-		menu.Credits:DockMargin(0, 0, 0, 4)
-		function menu.Credits:Paint(w, h)
-			surface.SetFont("RobotoHUD-25")
-			local t = GAMEMODE.Name or ""
-			local tw, th = surface.GetTextSize(t)
-			draw.ShadowText(t, "RobotoHUD-25", 4, 0, Color(199, 49, 29), 0)
-
-			draw.ShadowText("by: Wolvindra-Vinzuerio, Jai Choccy Fox, & Lucky.", "RobotoHUD-L15", 4 + tw + 24, h * 0.9, Color(220, 220, 220), 0, 4)
-
-			local round = GetGlobalInt("RoundNumber", 0)
-			local total_rounds = GetConVarNumber("ph_rounds_per_map")
-
-			local rounds_left = total_rounds - round
-
-			draw.ShadowText("Rounds until map vote: " .. rounds_left, "RobotoHUD-L15", w - 10, h * 0.9, Color(220, 220, 220), TEXT_ALIGN_RIGHT, 4)
-		end
-
-		function menu.Credits:PerformLayout()
-			surface.SetFont("RobotoHUD-25")
-			local w, h = surface.GetTextSize(GAMEMODE.Name or "")
-			self:SetTall(h)
-		end
-
-		local bottom = vgui.Create("DPanel", menu)
-		bottom:SetTall(draw.GetFontHeight("RobotoHUD-15") * 1.3)
-		bottom:Dock(BOTTOM)
-		bottom:DockMargin(0, 8, 0, 0)
-
-		surface.SetFont("RobotoHUD-15")
-		local tw, th = surface.GetTextSize("Spectate")
-
-		function bottom:Paint(w, h)
-			local c
-			for k, ply in pairs(team.GetPlayers(TEAM_SPECTATOR)) do
-				if c then
-					c = c .. ", " .. ply:Nick()
-				else
-					c = ply:Nick()
-				end
-			end
-			if c then
-				draw.ShadowText(c, "RobotoHUD-10", tw + 8 + 4, h / 2, color_white, 0, 1)
-			end
-			local mapName = "Map: " .. game.GetMap()
-			draw.ShadowText(mapName, "RobotoHUD-L15", w - 10, h * 0.9, Color(220, 220, 220), TEXT_ALIGN_RIGHT, 4)
-		end
-
-		local but = vgui.Create("DButton", bottom)
-		but:Dock(LEFT)
-		but:SetText("")
-		but:DockMargin(0, 0, 4, 0)
-
-		but:SetWide(tw + 8)
-		function but:Paint(w, h)
-			local col = Color(36, 36, 36, 220)
-			if self:IsHovered() then
-				col = Color(55, 55, 55, 220)
-			elseif self:IsDown() then
-				col = Color(80, 80, 80, 220)
-			end
-			draw.RoundedBox(4, 0, 0, w, h, col)
-            draw.ShadowText("Spectate", "RobotoHUD-15", 4, h / 2 - th / 2, Color(255, 255, 160), 0)
-		end
-
-		function but:DoClick()
-			RunConsoleCommand("changeteam", TEAM_SPECTATOR)
-		end
-
-		local main = vgui.Create("DPanel", menu)
-		main:Dock(FILL)
-		function main:Paint(w, h)
-			surface.SetDrawColor(40,40,40,220)
-		end
-
-		menu.CopsList = makeTeamList(main, 1)
-		menu.CopsList:Dock(LEFT)
-		menu.CopsList:DockMargin(0, 0, 8, 0)
-		menu.RobbersList = makeTeamList(main, 2)
-		menu.RobbersList:Dock(FILL)
-
-
+		return ScrW() * 0.8, ScrH() * 0.8
 	end
-	
+end
+local function buildScoreboardPanel()
+	if IsValid(menu) then
+		menu:Remove()
+	end
+
+	menu = vgui.Create("DFrame")
+	GAMEMODE.ScoreboardPanel = menu
+
+	local sbW, sbH = getScoreboardSize()
+	menu:SetSize(sbW, sbH)
+	menu:Center()
+	menu:MakePopup()
+	menu:SetKeyboardInputEnabled(false)
+	menu:SetDeleteOnClose(false)
+	menu:SetDraggable(false)
+	menu:ShowCloseButton(false)
+	menu:SetTitle("")
+	menu:DockPadding(8, 8, 8, 8)
+	function menu:PerformLayout()
+		local sbW, sbH = getScoreboardSize()
+		if self:GetWide() ~= sbW or self:GetTall() ~= sbH then
+			self:SetSize(sbW, sbH)
+			self:SetPos((ScrW() - sbW) / 2, (ScrH() - sbH) / 2)
+		end
+
+		if IsValid(menu.CopsList) then
+			menu.CopsList:SetWidth((self:GetWide() - 16) * 0.5)
+		end
+	end
+
+	function menu:Paint(w, h)
+		surface.SetDrawColor(36, 36, 36, 220)
+		surface.DrawRect(0, 0, w, h)
+	end
+
+	menu.Credits = vgui.Create("DPanel", menu)
+	menu.Credits:Dock(TOP)
+	menu.Credits:DockMargin(0, 0, 0, 4)
+	function menu.Credits:Paint(w, h)
+		surface.SetFont("RobotoHUD-25")
+		local t = GAMEMODE.Name or ""
+		local tw, th = surface.GetTextSize(t)
+		draw.ShadowText(t, "RobotoHUD-25", 4, 0, Color(199, 49, 29), 0)
+
+		draw.ShadowText("by: Wolvindra-Vinzuerio, Jai Choccy Fox, & Lucky.", "RobotoHUD-L15", 4 + tw + 24, h * 0.9, Color(220, 220, 220), 0, 4)
+
+		local round = GetGlobalInt("RoundNumber", 0)
+		local total_rounds = GetConVarNumber("ph_rounds_per_map")
+
+		local rounds_left = total_rounds - round
+
+		draw.ShadowText("Rounds until map vote: " .. rounds_left, "RobotoHUD-L15", w - 10, h * 0.9, Color(220, 220, 220), TEXT_ALIGN_RIGHT, 4)
+	end
+
+	function menu.Credits:PerformLayout()
+		surface.SetFont("RobotoHUD-25")
+		local w, h = surface.GetTextSize(GAMEMODE.Name or "")
+		self:SetTall(h)
+	end
+
+	local bottom = vgui.Create("DPanel", menu)
+	bottom:SetTall(draw.GetFontHeight("RobotoHUD-15") * 1.3)
+	bottom:Dock(BOTTOM)
+	bottom:DockMargin(0, 8, 0, 0)
+
+	surface.SetFont("RobotoHUD-15")
+	local tw, th = surface.GetTextSize("Spectate")
+
+	function bottom:Paint(w, h)
+		local c
+		for k, ply in pairs(team.GetPlayers(TEAM_SPECTATOR)) do
+			if c then
+				c = c .. ", " .. ply:Nick()
+			else
+				c = ply:Nick()
+			end
+		end
+		if c then
+			draw.ShadowText(c, "RobotoHUD-10", tw + 8 + 4, h / 2, color_white, 0, 1)
+		end
+		local mapName = "Map: " .. game.GetMap()
+		draw.ShadowText(mapName, "RobotoHUD-L15", w - 10, h * 0.9, Color(220, 220, 220), TEXT_ALIGN_RIGHT, 4)
+	end
+
+	local but = vgui.Create("DButton", bottom)
+	but:Dock(LEFT)
+	but:SetText("")
+	but:DockMargin(0, 0, 4, 0)
+
+	but:SetWide(tw + 8)
+	function but:Paint(w, h)
+		local col = Color(36, 36, 36, 220)
+		if self:IsHovered() then
+			col = Color(55, 55, 55, 220)
+		elseif self:IsDown() then
+			col = Color(80, 80, 80, 220)
+		end
+		draw.RoundedBox(4, 0, 0, w, h, col)
+        draw.ShadowText("Spectate", "RobotoHUD-15", 4, h / 2 - th / 2, Color(255, 255, 160), 0)
+	end
+
+	function but:DoClick()
+		RunConsoleCommand("changeteam", TEAM_SPECTATOR)
+	end
+
+	local main = vgui.Create("DPanel", menu)
+	main:Dock(FILL)
+	function main:Paint(w, h)
+		surface.SetDrawColor(40,40,40,220)
+	end
+
+	menu.CopsList = makeTeamList(main, 1)
+	menu.CopsList:Dock(LEFT)
+	menu.CopsList:DockMargin(0, 0, 8, 0)
+	menu.RobbersList = makeTeamList(main, 2)
+	menu.RobbersList:Dock(FILL)
+
+	return menu
+end
+
+function GM:ScoreboardShow()
+	buildScoreboardPanel()
+
+	if GAMEMODE.GameState == 3 then
+		menu:SetVisible(false)
+	else
+		menu:SetVisible(true)
+	end
 end
 
 function GM:ScoreboardHide()
-	if GAMEMODE.GameState == 3 then
-		menu:Close()
-		return
-	end
 	if IsValid(menu) then
 		menu:Close()
 	end
@@ -379,7 +417,7 @@ function GM:DoScoreboardActionPopup(ply)
         admin:SetIcon("icon16/shield.png")
     end
 
-    if ply != LocalPlayer() then
+    if ply ~= LocalPlayer() then
         local t = "Mute"
         if ply:IsMuted() then
             t = "Unmute"
@@ -388,7 +426,7 @@ function GM:DoScoreboardActionPopup(ply)
         mute:SetIcon("icon16/sound_mute.png")
         function mute:DoClick()
             if IsValid(ply) then
-                ply:SetMuted(!ply:IsMuted())
+                ply:SetMuted(not ply:IsMuted())
             end
         end
     end
@@ -432,7 +470,7 @@ function GM:DoScoreboardActionPopup(ply)
 				kickButton:SetText("Kick Player")
 				kickButton.DoClick = function()
 					local reason = reasonEntry:GetValue()
-					if reason != "" then
+					if reason ~= "" then
 						if ply:IsBot() then
 							RunConsoleCommand("ulx", "kick", ply:Nick(), reason)
 						else
@@ -479,7 +517,7 @@ function GM:DoScoreboardActionPopup(ply)
 				banButton.DoClick = function()
 					local reason = reasonEntry:GetValue()
 					local duration = tonumber(durationEntry:GetValue())
-					if reason != "" and duration and duration > 0 then
+					if reason ~= "" and duration and duration > 0 then
 						if ply:IsBot() then
 							RunConsoleCommand("ulx", "ban", ply:Nick(), duration, reason)
 						else

@@ -54,9 +54,9 @@ IncludePlayerClasses()
 
 -- Information about the gamemode
 GM.Name		= "Prop Hunt: ENHANCED"
-GM.Author	= "Wolvindra-Vinzuerio, Jai Choccy Fox, Lucky, Fafy & KO-pKAs3tnj5sU8e85yuXA"
+GM.Author	= "Wolvindra-Vinzuerio, Jai Choccy Fox, & Lucky"
 
-GM._VERSION = "15-12-2024"
+GM._VERSION = "21-06-2026"
 GM.DONATEURL = "https://prophuntenhanced.xyz/donate"
 
 -- Format PHE.LANG.Help

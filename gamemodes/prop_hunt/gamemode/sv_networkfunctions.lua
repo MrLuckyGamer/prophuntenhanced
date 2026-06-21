@@ -26,11 +26,15 @@ util.AddNetworkString("PH_TeamWinning_Snd")
 util.AddNetworkString("AutoTauntSpawn")
 util.AddNetworkString("AutoTauntRoundEnd")
 
-
 util.AddNetworkString("ResetRotateTeams")
 util.AddNetworkString("ForceHunterAsProp")
 util.AddNetworkString("SendChatMessage")
 
+-- Replacements for the old (removed) Player:SendLua usage - used by Lucky Balls / Devil Crystals and misc notifications.
+util.AddNetworkString("PHE_PlaySound")
+util.AddNetworkString("PHE_GlimpCam")
+util.AddNetworkString("PHE_ShowNotification")
+util.AddNetworkString("PHE_RunConsoleCommand")
 
 -- some stupid checks
 util.AddNetworkString("PHE.rotateState")

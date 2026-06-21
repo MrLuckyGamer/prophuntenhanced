@@ -83,7 +83,7 @@
 			"text"		"Prop View Collisions"
 			"help"		"Props can/cannot see through walls."
 			"type"		"CheckBox"
-			"default"	"1"
+			"default"	"0"
 		}
 		
 		9
@@ -101,7 +101,7 @@
 			"text"		"Team Props Collision"
 			"help"		"Should Team Props collide with each other?"
 			"type"		"CheckBox"
-			"default"	"1"
+			"default"	"0"
 		}
 		
 		11
@@ -126,7 +126,7 @@
 		{
 			"name"		"ph_enable_custom_taunts"
 			"text"		"Custom Taunts"
-			"help"		"Enable custom taunts Window?"
+			"help"		"Enable custom taunts Window? (0 = Disabled, 1 = Enabled, 2 = Enabled + List)"
 			"type"		"Numeric"
 			"default"	"2"
 		}
@@ -135,7 +135,7 @@
 		{
 			"name"		"ph_customtaunts_delay"
 			"text"		"Custom Taunts delay"
-			"help"		"How many times Custom Taunt should be able to played again?"
+			"help"		"How many seconds delay before props can play a Custom Taunt again? (Default is 6)"
 			"type"		"Numeric"
 			"default"	"6"
 		}
@@ -146,7 +146,7 @@
 			"text"		"Normal taunts delay"
 			"help"		"How many in seconds delay for props to play normal [F3] taunt again? (Default is 2)"
 			"type"		"Numeric"
-			"default"	"6"
+			"default"	"2"
 		}
 		
 		16
@@ -157,8 +157,17 @@
 			"type"		"CheckBox"
 			"default"	"1"
 		}
-		
+
 		17
+		{
+			"name"		"ph_enable_devil_balls"
+			"text"		"Enable Devil Balls"
+			"help"		"Spawn Devil Balls when a hunter dies?"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+		
+		18
 		{
 			"name"		"ph_enable_plnames"
 			"text"		"Allow Player Names"
@@ -167,16 +176,25 @@
 			"default"	"0"
 		}
 		
-		18
+		19
 		{
 			"name"		"ph_waitforplayers"
 			"text"		"Wait for Players"
 			"help"		"Should we wait for players for proper round?"
 			"type"		"CheckBox"
-			"default"	"0"
+			"default"	"1"
 		}
 		
-		19
+		20
+		{
+			"name"		"ph_min_waitforplayers"
+			"text"		"Min Players to Wait For"
+			"help"		"Minimum number of players required before a proper round will start. Must be at least 1."
+			"type"		"Numeric"
+			"default"	"1"
+		}
+		
+		21
 		{
 			"name"		"ph_autotaunt_enabled"
 			"text"		"Enable Auto Taunting"
@@ -185,7 +203,7 @@
 			"default"	"1"
 		}
 
-		20
+		22
 		{
 			"name"		"ph_autotaunt_delay"
 			"text"		"Auto Taunt Timer"
@@ -194,7 +212,7 @@
 			"default"	"45"
 		}
 
-		21
+		23
 		{
 			"name"		"ph_hunter_smg_grenades"
 			"text"		"SMG Grenades"
@@ -203,11 +221,317 @@
 			"default"	"1"
 		}
 		
-		22
+		24
 		{
 			"name"		"ph_falldamage"
 			"text"		"Enable Fall Damage"
 			"help"		"Whether players should take damage when falling from heights"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		25
+		{
+			"name"		"ph_prop_jumppower"
+			"text"		"Prop Jump Power Multiplier"
+			"help"		"Multiplier for Prop Jump Power (not to be confused with Prop Gravity!). Default is 1.4. Min. 1."
+			"type"		"Numeric"
+			"default"	"1.4"
+		}
+
+		26
+		{
+			"name"		"ph_hunter_jumppower"
+			"text"		"Hunter Jump Power Multiplier"
+			"help"		"Multiplier for Hunter Jump Power (not to be confused with Hunter Gravity!). Default is 1. Min. 1."
+			"type"		"Numeric"
+			"default"	"1"
+		}
+
+		27
+		{
+			"name"		"ph_notice_prop_rotation"
+			"text"		"Notify Prop Rotation"
+			"help"		"Enable a notification every time a Prop spawns reminding them how to rotate."
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		28
+		{
+			"name"		"ph_allow_prop_pickup"
+			"text"		"Allow Prop Pickup"
+			"help"		"0 = No one can pick up small props, 1 = Everyone can pick up small props, 2 = Only Hunters can pick up small props"
+			"type"		"Numeric"
+			"default"	"1"
+		}
+
+		29
+		{
+			"name"		"ph_forcejoinbalancedteams"
+			"text"		"Force Balanced Teams on Join"
+			"help"		"Force players to even out teams upon joining"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		30
+		{
+			"name"		"ph_autoteambalance"
+			"text"		"Auto Team Balance"
+			"help"		"Automatically even out teams at the start of a round"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		31
+		{
+			"name"		"ph_originalteambalance"
+			"text"		"Use Original Team Balance"
+			"help"		"Use PH:E's original auto-balancing (disables all other team-related options below)"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		32
+		{
+			"name"		"ph_rotateteams"
+			"text"		"Rotate Teams Instead of Shuffling"
+			"help"		"Disable shuffle mode and rotate players through roles instead"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		33
+		{
+			"name"		"ph_huntercount"
+			"text"		"Hunter Count"
+			"help"		"Fixed number of Hunters per round (0 = automatic)"
+			"type"		"Numeric"
+			"default"	"0"
+		}
+
+		34
+		{
+			"name"		"ph_preventconsecutivehunting"
+			"text"		"Prevent Consecutive Hunting"
+			"help"		"Prevent players from being a Hunter twice in a row (shuffle mode only)"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		35
+		{
+			"name"		"ph_forcespectatorstoplay"
+			"text"		"Force Spectators to Play"
+			"help"		"Force spectators to play by including them when balancing teams"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		36
+		{
+			"name"		"ph_unstuckrange"
+			"text"		"Unstuck Range"
+			"help"		"Allowed range for the unstuck process (default = 250, should be a multiple of 5)"
+			"type"		"Numeric"
+			"default"	"250"
+		}
+
+		37
+		{
+			"name"		"ph_unstuck_waittime"
+			"text"		"Unstuck Wait Time (Sec.)"
+			"help"		"How many seconds must pass between each unstuck attempt"
+			"type"		"Numeric"
+			"default"	"5"
+		}
+
+		38
+		{
+			"name"		"ph_disabletpunstuckinround"
+			"text"		"Disable In-Round Unstuck Teleport"
+			"help"		"Disable last-resort unstuck teleportations to spawnpoints outside of the hiding phase"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		39
+		{
+			"name"		"ph_experimentalpropcollisions"
+			"text"		"[EXPERIMENTAL] Lenient Prop Collisions"
+			"help"		"Less strict prop collisions (might prevent getting stuck), but sometimes gives a small hitbox to big props (doesn't affect bullets)"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		40
+		{
+			"name"		"phe_check_props_boundaries"
+			"text"		"[WIP] Check Prop Boundaries"
+			"help"		"[EXPERIMENTAL] Enable prop boundaries check? This will prevent you getting stuck inside other objects/walls."
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		41
+		{
+			"name"		"ph_tauntpitch_allowed"
+			"text"		"Allow Taunt Pitch"
+			"help"		"Whether players can use the taunt pitch (pitch up/down) functionality"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		42
+		{
+			"name"		"ph_tauntpitch_min"
+			"text"		"Min Taunt Pitch"
+			"help"		"Minimum taunt pitch players can use (0-100)"
+			"type"		"Numeric"
+			"default"	"60"
+		}
+
+		43
+		{
+			"name"		"ph_tauntpitch_max"
+			"text"		"Max Taunt Pitch"
+			"help"		"Maximum taunt pitch players can use (100-255)"
+			"type"		"Numeric"
+			"default"	"180"
+		}
+
+		44
+		{
+			"name"		"ph_use_playermodeltype"
+			"text"		"Custom Model List Type"
+			"help"		"Which model list should be used? 0 = All available Playermodels, 1 = Legacy method: list.Get('PlayerOptionsModel') (Recommended if you want to customise your model list)"
+			"type"		"Numeric"
+			"default"	"0"
+		}
+
+		45
+		{
+			"name"		"ph_fc_use_single_sound"
+			"text"		"Freezecam Single Sound"
+			"help"		"Use a single Freezecam sound instead of the sound list?"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		46
+		{
+			"name"		"ph_mkbren_use_new_mdl"
+			"text"		"Use New Bren MK II Model"
+			"help"		"Use the new model for the Bren MK II Bonus Weapon (Requires Map Restart!)"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		47
+		{
+			"name"		"ph_sv_enable_obb_modifier"
+			"text"		"Developer: Enable OBB Modifier"
+			"help"		"Developer: Enable OBB Model Data Modifier"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		48
+		{
+			"name"		"ph_reload_obb_setting_everyround"
+			"text"		"Developer: Reload OBB Modifier Each Round"
+			"help"		"Developer: Reload OBB Model Data Modifier every round restart"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		49
+		{
+			"name"		"ph_print_verbose"
+			"text"		"Verbose Logging"
+			"help"		"Verbosely prints any events of Prop Hunt: Enhanced."
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		50
+		{
+			"name"		"ph_language"
+			"text"		"Server Language"
+			"help"		"Language of the server, requires map change."
+			"type"		"Text"
+			"default"	"en"
+		}
+
+		51
+		{
+			"name"		"mv_allowcurmap"
+			"text"		"MapVote: Allow Current Map"
+			"help"		"Allow the current map to be voted again (1/0)"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		52
+		{
+			"name"		"mv_cooldown"
+			"text"		"MapVote: Enable Cooldown"
+			"help"		"Enable cooldown for recently voted maps"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		53
+		{
+			"name"		"mv_mapbeforerevote"
+			"text"		"MapVote: Maps Before Revote"
+			"help"		"How many other maps must be played before a cooled-down map can be voted again?"
+			"type"		"Numeric"
+			"default"	"2"
+		}
+
+		54
+		{
+			"name"		"mv_maplimit"
+			"text"		"MapVote: Map List Limit"
+			"help"		"Number of maps shown on the mapvote list"
+			"type"		"Numeric"
+			"default"	"24"
+		}
+
+		55
+		{
+			"name"		"mv_rtvcount"
+			"text"		"MapVote: Min Players for RTV"
+			"help"		"Minimum number of players required to allow Rock the Vote / MapVote"
+			"type"		"Numeric"
+			"default"	"3"
+		}
+
+		56
+		{
+			"name"		"mv_timelimit"
+			"text"		"MapVote: Vote Time Limit (Sec.)"
+			"help"		"Time in seconds for the default mapvote to run before changing to the most chosen map"
+			"type"		"Numeric"
+			"default"	"28"
+		}
+
+		57
+		{
+			"name"		"mv_use_ulx_votemaps"
+			"text"		"MapVote: Use ULX Votemaps List"
+			"help"		"Use map listing from ULX Mapvote? 1 = use from your whitelisted ULX mapvote list, 0 = use default maps/*.bsp directory listing."
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		58
+		{
+			"name"		"mv_change_when_no_player"
+			"text"		"MapVote: Change Map When Empty"
+			"help"		"Change the map after there are no players left on the server?"
 			"type"		"CheckBox"
 			"default"	"1"
 		}

@@ -32,6 +32,72 @@ PHE.SVAdmins = {
 	"owner"
 }
 
+-- Whitelist of ConVars the F1 Admin Menu is allowed to change via SvCommandReq/SvCommandBoxReq/SvCommandSliderReq.
+-- IMPORTANT: sv_admin.lua only ever runs RunConsoleCommand() on cvars listed here, even for users that pass the
+-- admin check. This stops a compromised/malicious admin client from sending an arbitrary command string and having
+-- the server blindly execute it. If you add a new SERVER-kind control to cl_menu.lua, add its cvar here too, or it
+-- will be silently rejected server-side. Third-party addons that hook PH_CustomPlayermdlButton/PH_CustomTabMenu to
+-- add their own SERVER-kind menu entries should add their cvars here as well (e.g. table.insert(PHE.ADMIN_MENU_CVARS, "my_cvar")).
+PHE.ADMIN_MENU_CVARS = {
+	"ph_language",
+	"ph_use_custom_plmodel",
+	"ph_use_custom_plmodel_for_prop",
+	"ph_customtaunts_delay",
+	"ph_normal_taunt_delay",
+	"ph_autotaunt_enabled",
+	"ph_autotaunt_delay",
+	"ph_tauntpitch_allowed",
+	"ph_tauntpitch_min",
+	"ph_tauntpitch_max",
+	"ph_forcejoinbalancedteams",
+	"ph_autoteambalance",
+	"ph_originalteambalance",
+	"ph_forcespectatorstoplay",
+	"ph_preventconsecutivehunting",
+	"ph_rotateteams",
+	"ph_huntercount",
+	"ph_unstuck_waittime",
+	"ph_disabletpunstuckinround",
+	"ph_allow_prop_pickup",
+	"ph_notice_prop_rotation",
+	"ph_prop_camera_collisions",
+	"ph_freezecam",
+	"ph_prop_collision",
+	"ph_falldamage",
+	"ph_swap_teams_every_round",
+	"ph_hunter_fire_penalty",
+	"ph_hunter_kill_bonus",
+	"ph_hunter_smg_grenades",
+	"ph_game_time",
+	"ph_hunter_blindlock_time",
+	"ph_round_time",
+	"ph_rounds_per_map",
+	"ph_enable_lucky_balls",
+	"ph_enable_devil_balls",
+	"ph_waitforplayers",
+	"ph_min_waitforplayers",
+	"phe_check_props_boundaries",
+	"ph_experimentalpropcollisions",
+	"ph_mkbren_use_new_mdl",
+	"ph_print_verbose",
+	"ph_enable_plnames",
+	"ph_fc_use_single_sound",
+	"ph_use_playermodeltype",
+	"ph_prop_jumppower",
+	"ph_hunter_jumppower",
+	"ph_sv_enable_obb_modifier",
+	"ph_reload_obb_setting_everyround",
+	"mv_allowcurmap",
+	"mv_cooldown",
+	"mv_use_ulx_votemaps",
+	"mv_maplimit",
+	"mv_timelimit",
+	"mv_mapbeforerevote",
+	"mv_rtvcount",
+	-- Used by SendTauntStateCmd handler directly (kept here so it's covered by the same audit/whitelist).
+	"ph_enable_custom_taunts"
+}
+
 PHE.UNSTUCK_COMMANDS = {
 	"!unstuck", "!stuck",
 	"/unstuck", "/stuck",

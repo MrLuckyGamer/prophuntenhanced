@@ -4,8 +4,28 @@ function ph_BaseMainWindow(ply, cmd, args)
 	local mdlPath = player_manager.TranslatePlayerModel(mdlName)
 
 	local frm = vgui.Create("DFrame")
-	frm:SetSize(ScrW() - 96,ScrH() - 64)
+	local MENU_FIXED_W, MENU_FIXED_H = 1824, 1016
+	local function getMenuSize()
+		if ScrW() >= 1920 and ScrH() >= 1080 then
+			return MENU_FIXED_W, MENU_FIXED_H
+		else
+			return ScrW() - 96, ScrH() - 64
+		end
+	end
+	frm:SetSize(getMenuSize())
 	frm:SetTitle("Prop Hunt: Enhanced | Help & Settings menu")
+	frm:SetSizable(false)
+	frm:SetScreenLock(true)
+
+	local DFramePerformLayout = frm.PerformLayout
+	function frm:PerformLayout(w, h)
+		local menuW, menuH = getMenuSize()
+		if w ~= menuW or h ~= menuH then
+			self:SetSize(menuW, menuH)
+			self:SetPos((ScrW() - menuW) / 2, (ScrH() - menuH) / 2)
+		end
+		DFramePerformLayout(self, self:GetWide(), self:GetTall())
+	end
 	frm.Paint = function(self,w,h)
 		surface.SetDrawColor(30,30,30,180)
 		surface.DrawRect(0,0,w,h)

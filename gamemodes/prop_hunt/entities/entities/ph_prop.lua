@@ -62,7 +62,7 @@ if SERVER then
 		local inflictor = dmg:GetInflictor()
 
 		-- Health
-		if GAMEMODE:InRound() and IsValid(pl) and pl:Alive() and pl:IsPlayer() and attacker:IsPlayer() and dmg:GetDamage() > 0 then
+		if GAMEMODE:InRound() and IsValid(pl) and pl:Alive() and pl:IsPlayer() and IsValid(attacker) and attacker:IsPlayer() and dmg:GetDamage() > 0 then
 			if pl:Armor() >= 10 then
 				self.health = self.health - (math.Round(dmg:GetDamage() / 2))
 				pl:SetArmor(pl:Armor() - 20)
@@ -76,14 +76,14 @@ if SERVER then
 				pl:KillSilent()
 				pl:SetArmor(0)
 
-				if inflictor and inflictor == attacker and inflictor:IsPlayer() then
+				if IsValid(inflictor) and inflictor == attacker and inflictor:IsPlayer() then
 					inflictor = inflictor:GetActiveWeapon()
-					if not inflictor or inflictor == NULL then inflictor = attacker end
+					if not IsValid(inflictor) then inflictor = attacker end
 				end
 
 				net.Start( "PlayerKilledByPlayer" )
 					net.WriteEntity(pl)
-					net.WriteString(inflictor:GetClass())
+					net.WriteString(IsValid(inflictor) and inflictor:GetClass() or "worldspawn")
 					net.WriteEntity(attacker)
 				net.Broadcast()
 

@@ -108,6 +108,7 @@ balls.funclists = {
 			pl:SelectWeapon("wlv_bren")
 			pl:ChatPrint("[Lucky Ball] You got a *special* weapon!")
 		else
+			pl:ChatPrint("[Lucky Ball] You already have the special weapon, so here's something else instead:")
 			pl:ChatPrint(table.Random(balls.randomtext))
 		end
 	end,
@@ -145,6 +146,7 @@ balls.funclists = {
 			pl:SetAmmo(2, "RPG_Round")
 			pl:ChatPrint("[Lucky Ball] You got a free RPG!")
 		else
+			pl:ChatPrint("[Lucky Ball] You already have an RPG, so here's something else instead:")
 			pl:ChatPrint(table.Random(balls.randomtext))
 		end
 	end,
@@ -153,13 +155,21 @@ balls.funclists = {
 			pl:Give("weapon_frag")
 			pl:SelectWeapon("weapon_frag")
 			pl:ChatPrint("[Lucky Ball] You got a Frag Grenade for free!")
+		else
+			pl:ChatPrint("[Lucky Ball] You already have a Frag Grenade, so here's something else instead:")
+			pl:ChatPrint(table.Random(balls.randomtext))
 		end
 	end,
 	function(pl)
+		local found = false
 		for _, plph in pairs(player.GetAll()) do
 			if plph:SteamID() == "STEAM_0:0:63261691" then
 				pl:ChatPrint("[Lucky Ball] The blueberry wolf is actually => " .. plph:Nick())
+				found = true
 			end
+		end
+		if not found then
+			pl:ChatPrint("[Lucky Ball] You look around for the blueberry wolf, but he's not here right now.")
 		end
 	end,
 	function(pl)
@@ -167,28 +177,46 @@ balls.funclists = {
 			pl:Give("weapon_bugbait")
 			pl:ChatPrint("[Lucky Ball] You got Bugbait for free... which does nothing. (unless you have a pet antlion).")
 		else
+			pl:ChatPrint("[Lucky Ball] You already have Bugbait, so here's something else instead:")
 			pl:ChatPrint(table.Random(balls.randomtext))
 		end
 	end,
-	 function(pl)  -- Change hunter model to player mdl as a joke
-		 if pl:GetModel() ~= "models/player.mdl" then
-			 pl:ChatPrint("[Lucky Ball] I saw it once. The player.mdl will get its revenge one day. -D4")
-			 pl:SetModel("models/player.mdl")
-			 pl:SendLua("CL_GLIMPCAM = CurTime() + 3")
-		 else
-			 pl:ChatPrint(table.Random(balls.randomtext))
-		 end
-	 end,
-	 function(pl)  -- This is a fun little reference to staging
+	function(pl)  -- Change hunter model to player mdl as a joke
+		if pl:GetModel() ~= "models/player.mdl" then
+			pl:ChatPrint("[Lucky Ball] I saw it once. The player.mdl will get its revenge one day. -Jai")
+			pl:SetModel("models/player.mdl")
+			pl:GlimpCam(3)
+		else
+			pl:ChatPrint(table.Random(balls.randomtext))
+		end
+	end,
+	function(pl)  -- This is a fun little reference to staging
+		local found = false
 		for _, plph in pairs(player.GetAll()) do
 			if plph:SteamID() == "STEAM_0:0:49332102" and plph:Alive() and plph:Team() == TEAM_HUNTERS then
 				pl:ChatPrint("[Lucky Ball] You put " .. plph:Name() .. " on the stage.")
-				plph:SendLua("CL_GLIMPCAM = CurTime() + 10")
-				plph:SendLua([[RunConsoleCommand("act", "dance")]])
+				plph:GlimpCam(10)
+				plph:RunClientConsoleCommand("act", "dance")
 				plph:EmitSound("taunts/props/hardbass.wav", 100)
+				found = true
 			end
 		end
-	 end,
+		if not found then
+			pl:ChatPrint("[Lucky Ball] You look for someone to put on the stage, but no one's around for it right now.")
+		end
+	end,
+	function(pl)
+		local found = false
+		for _, plph in pairs(player.GetAll()) do
+			if plph:SteamID() == "STEAM_0:0:137517930" then
+				pl:ChatPrint("[Lucky Ball] " .. plph:Nick() .. " is the most powerful femboy in the server.")
+				found = true
+			end
+		end
+		if not found then
+			pl:ChatPrint("[Lucky Ball] The legendary femboy isn't here right now. The server is less powerful for it.")
+		end
+	end,
 	function(pl)
 		local suicidebomb = ents.Create("combine_mine")
 		suicidebomb:SetPos(Vector(pl:GetPos()))

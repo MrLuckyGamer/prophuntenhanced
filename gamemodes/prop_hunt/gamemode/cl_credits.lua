@@ -22,9 +22,9 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 
 	local label = {
 		title 	= "Prop Hunt: Enhanced",
-		authors	= "Wolvindra-Vinzuerio, Jai Choccy Fox, Lucky, Fafy & KO-pKAs3tnj5sU8e85yuXA", 
+		authors	= "Wolvindra-Vinzuerio, Jai Choccy Fox, & Lucky", 
 		version = GAMEMODE._VERSION,
-		credits	= "Yam, Lucky, Godfather, adk, Lucas2107, Jonpopnycorn, Thundernerd, stephanlachnit",
+		credits	= "Yam, Lucky, Godfather, adk, Lucas2107, Jonpopnycorn, Thundernerd, stephanlachnit, Fafy & KO-pKAs3tnj5sU8e85yuXA",
 		lhome	= "https://prophuntenhanced.xyz/",
 		ldonate = GAMEMODE.DONATEURL,
 		lgit	= "https://github.com/MrLuckyGamer/prophuntenhanced",
@@ -45,7 +45,27 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 		[5] = { PHE.LANG.PHEMENU.ABOUT.PLUGINS,	function() gui.OpenURL(label.lplugins) end},
 	}}, grid, "")
 	pVgui("spacer1", "spacer", nil, grid, "")
-	pVgui("", "label", "Trebuchet24", grid, PHE.LANG.PHEMENU.ABOUT.THANKS .. "\n" .. label.credits)
+
+	local creditsLines = {}
+	local maxLineLength = 90
+
+	local currentLine = ""
+	for name in string.gmatch(label.credits, "[^,]+,?%s*") do
+		if #currentLine + #name > maxLineLength and currentLine ~= "" then
+			table.insert(creditsLines, currentLine)
+			currentLine = name
+		else
+			currentLine = currentLine .. name
+		end
+	end
+	if currentLine ~= "" then
+		table.insert(creditsLines, currentLine)
+	end
+
+	pVgui("", "label", "Trebuchet24", grid, PHE.LANG.PHEMENU.ABOUT.THANKS)
+	for _, line in ipairs(creditsLines) do
+		pVgui("", "label", "Trebuchet24", grid, line)
+	end
 
 	tab:AddSheet(PHE.LANG.PHEMENU.ABOUT.TAB, panel, "icon16/information.png")
 end)

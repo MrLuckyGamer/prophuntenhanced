@@ -424,12 +424,15 @@ function GM:TeleportPlayerToClosestSpawnpoint(pl)
 	local sortedSpawnpoints = {}
 	for _, spawnpoint in pairs(ents.FindByClass(navmesh.GetPlayerSpawnName())) do 
 		local pos = spawnpoint:GetPos()
-		sortedSpawnpoints[pos:DistToSqr(playerPos)] = pos
+		table.insert(sortedSpawnpoints, { dist = pos:DistToSqr(playerPos), pos = pos })
 	end
+
+	table.sort(sortedSpawnpoints, function(a, b) return a.dist < b.dist end)
 
 	
 	local firstPos, rescuePos = nil, nil
-	for dist, pos in SortedPairs(sortedSpawnpoints) do
+	for _, entry in ipairs(sortedSpawnpoints) do
+		local pos = entry.pos
 		if rescuePos == nil then rescuePos = pos end
 
 		if firstPos == nil then
@@ -734,9 +737,9 @@ function GM:OnPreRoundStart(num)
 				else
 					pl:SetTeam(TEAM_PROPS)
 					if GetConVar("ph_notice_prop_rotation"):GetBool() then
-						timer.Simple(0.5, function() pl:SendLua([[notification.AddLegacy("You are in Prop Team with Rotate support! You can rotate the prop around by moving your mouse.", NOTIFY_UNDO, 20)]]) end)
-						pl:SendLua([[notification.AddLegacy("Additionally you can toggle lock rotation by pressing R key!", NOTIFY_GENERIC, 18)]])
-						pl:SendLua([[surface.PlaySound("garrysmod/content_downloaded.wav")]])
+						timer.Simple(0.5, function() pl:ShowNotification("You are in Prop Team with Rotate support! You can rotate the prop around by moving your mouse.", 2, 20) end) -- 2 = NOTIFY_UNDO
+						pl:ShowNotification("Additionally you can toggle lock rotation by pressing R key!", 0, 18) -- 0 = NOTIFY_GENERIC
+						pl:PlaySoundLocal("garrysmod/content_downloaded.wav")
 					end
 				end
 

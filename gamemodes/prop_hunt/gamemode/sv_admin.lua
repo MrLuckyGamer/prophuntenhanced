@@ -9,6 +9,11 @@ net.Receive("SvCommandReq", function(len, ply)
 	local cmd = net.ReadString()
 	local valbool = net.ReadInt(2)
 	if ply:IsAdmin() or table.HasValue(PHE.SVAdmins, ply:GetUserGroup()) then
+		if not table.HasValue(PHE.ADMIN_MENU_CVARS, cmd) then
+			printVerbose("[ADMIN CVAR NOTIFY] An admin " .. ply:Nick() .. "(" .. ply:SteamID() .. ") attempted to set a non-whitelisted cvar: " .. cmd .. ", blocked!")
+			return
+		end
+
 		RunConsoleCommand(cmd, math.Round(valbool))
 		printVerbose("[ADMIN CVAR NOTIFY] Commands: " .. cmd .. " has been changed (Player: " .. ply:Nick() .. " (" .. ply:SteamID() .. ")")
 	else
@@ -21,6 +26,11 @@ net.Receive("SvCommandBoxReq", function(len, ply)
 	local cmd = net.ReadString()
 	local valstring = net.ReadString()
 	if ply:IsAdmin() or table.HasValue(PHE.SVAdmins, ply:GetUserGroup()) then
+		if not table.HasValue(PHE.ADMIN_MENU_CVARS, cmd) then
+			printVerbose("[ADMIN CVAR NOTIFY] An admin " .. ply:Nick() .. "(" .. ply:SteamID() .. ") attempted to set a non-whitelisted cvar: " .. cmd .. ", blocked!")
+			return
+		end
+
 		RunConsoleCommand(cmd, valstring)
 		printVerbose("[ADMIN CVAR NOTIFY] Commands: " .. cmd .. " has been changed (Player: " .. ply:Nick() .. " (" .. ply:SteamID() .. ")")
 	else
@@ -39,6 +49,11 @@ net.Receive("SvCommandSliderReq", function(len, ply)
 		val = net.ReadInt(16)
 	end
 	if ply:IsAdmin() or table.HasValue(PHE.SVAdmins, ply:GetUserGroup()) then
+		if not table.HasValue(PHE.ADMIN_MENU_CVARS, cmd) then
+			printVerbose("[ADMIN CVAR SLIDER NOTIFY] An admin " .. ply:Nick() .. "(" .. ply:SteamID() .. ") attempted to set a non-whitelisted cvar: " .. cmd .. ", blocked!")
+			return
+		end
+
 		RunConsoleCommand(cmd, val)
 		printVerbose("[ADMIN CVAR SLIDER NOTIFY] Commands: " .. cmd .. " has been changed (Player: " .. ply:Nick() .. " (" .. ply:SteamID() .. ")")
 	else

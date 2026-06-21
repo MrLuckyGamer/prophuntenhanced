@@ -72,12 +72,12 @@ ENT.funclists = {
 			if not pl._OriginalWSpeed then pl._OriginalWSpeed = pl:GetWalkSpeed() end
 
 			pl:ChatPrint("[Devil Crystal] You have super speed Power up!")
-			pl:SendLua("surface.PlaySound('prop_idbs/speedup.wav')")
+			pl:PlaySoundLocal("prop_idbs/speedup.wav")
 			pl:SetWalkSpeed(pl:GetWalkSpeed() + 100)
 			pl.ph_fastspeed = true
 			pl.RevertWalk = timer.Simple(math.random(4, 12), function()
 				pl:ChatPrint("[Devil Crystal] super speed power up exhausted...")
-				pl:SendLua("surface.PlaySound('prop_idbs/generic_exhaust.wav')")
+				pl:PlaySoundLocal("prop_idbs/generic_exhaust.wav")
 				pl:SetWalkSpeed(pl._OriginalWSpeed)
 				pl.ph_fastspeed = false
 			end)
@@ -100,12 +100,12 @@ ENT.funclists = {
 			if not pl._OriginalWSpeed then pl._OriginalWSpeed = pl:GetWalkSpeed() end
 
 			pl:ChatPrint("[Devil Crystal] Uh oh, you're slowing down!")
-			pl:SendLua("surface.PlaySound('prop_idbs/slowdown.wav')")
+			pl:PlaySoundLocal("prop_idbs/slowdown.wav")
 			pl:SetWalkSpeed(pl:GetWalkSpeed() - 100)
 			pl.ph_slowspeed = true
 			pl.RevertWalk = timer.Simple(math.random(4, 12), function()
 				pl:ChatPrint("[Devil Crystal] slow down power up exhausted...")
-				pl:SendLua("surface.PlaySound('prop_idbs/generic_exhaust.wav')")
+				pl:PlaySoundLocal("prop_idbs/generic_exhaust.wav")
 				pl:SetWalkSpeed(pl._OriginalWSpeed)
 				pl.ph_slowspeed = false
 			end)
@@ -114,7 +114,7 @@ ENT.funclists = {
 	function(pl)
 		if table.Count(team.GetPlayers(TEAM_HUNTERS)) >= 3 then
 			pl:ChatPrint("[Devil Crystal] Hunters are frozen!")
-			pl:SendLua("surface.PlaySound('prop_idbs/surface_prop_froze_hunter.wav')")
+			pl:PlaySoundLocal("prop_idbs/surface_prop_froze_hunter.wav")
 			for _, v in pairs(team.GetPlayers(TEAM_HUNTERS)) do
 				if v:Alive() then
 					v:Freeze(true)
@@ -134,13 +134,13 @@ ENT.funclists = {
 	function(pl)
 		if not pl.ph_cloacking then
 			pl:ChatPrint("[Devil Crystal] Cloaking...")
-			pl:SendLua("surface.PlaySound('prop_idbs/cloak.wav')")
+			pl:PlaySoundLocal("prop_idbs/cloak.wav")
 			pl.ph_prop:DrawShadow(false)
 			pl.ph_prop:SetMaterial("models/effects/vol_light001")
 			pl.ph_cloacking = true
 			pl.RevertMaterial = timer.Simple(math.random(5, 15), function()
 				pl:ChatPrint("[Devil Crystal] cloak power up exhausted...")
-				pl:SendLua("surface.PlaySound('prop_idbs/generic_exhaust.wav')")
+				pl:PlaySoundLocal("prop_idbs/generic_exhaust.wav")
 				pl.ph_prop:DrawShadow(true)
 				pl.ph_prop:SetMaterial("")
 				pl.ph_cloacking = false
