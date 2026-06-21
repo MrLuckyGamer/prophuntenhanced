@@ -32,6 +32,10 @@ If you wanted for workshop version (ideal for personal/private gaming with your 
 Here is also a map and addon pack for the gamemode, if you are looking for some addons.
 https://steamcommunity.com/sharedfiles/filedetails/?id=1760588052
 
+## Latest Update (21-06-2026)
+Refactor networked UI/events and add config options
+See Workshop or GitHub [change notes](https://github.com/MrLuckyGamer/prophuntenhanced/commit/6a4d9104c4a698e5049a2fb9b5b2c78559e4a9b9) for full list of changes
+
 ## NEW Features (15-12-2024)
 This version adds a few new features:
 * New Default TAB Menu (No more crappy Default Fretta Menu)
