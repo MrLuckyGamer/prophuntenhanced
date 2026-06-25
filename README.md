@@ -122,6 +122,6 @@ Major Enhancement: Wolvindra-Vinzuerio, Jai "Choccy" Fox, Lucky
 
 More Enhancements and native language options from Fafy
 
-Built in Optimisations and stuck logic by Me
+Built in Optimisations and stuck logic by KO-pKAs3tnj5sU8e85yuXA
 
 And Major Enhancements updates and continued support from myself Lucky (again)
