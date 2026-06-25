@@ -1,25 +1,62 @@
-surface.CreateFont("RAM_VoteFont", {
-	font = "Trebuchet MS",
+surface.CreateFont("PHE.MapVoteTitle", {
+	font = "Roboto",
+	size = 26,
+	weight = 700,
+	antialias = true,
+})
+
+surface.CreateFont("PHE.MapVoteSub", {
+	font = "Roboto",
+	size = 15,
+	weight = 500,
+	antialias = true,
+})
+
+surface.CreateFont("PHE.MapVoteCountdown", {
+	font = "Roboto",
+	size = 34,
+	weight = 700,
+	antialias = true,
+})
+
+surface.CreateFont("PHE.MapVoteMapName", {
+	font = "Roboto",
 	size = 19,
 	weight = 700,
 	antialias = true,
-	shadow = true
 })
 
-surface.CreateFont("RAM_VoteFontCountdown", {
-	font = "Tahoma",
-	size = 32,
-	weight = 700,
+surface.CreateFont("PHE.MapVoteVotes", {
+	font = "Roboto",
+	size = 14,
+	weight = 500,
 	antialias = true,
-	shadow = true
 })
 
-surface.CreateFont("RAM_VoteSysButton", {
+surface.CreateFont("PHE.MapVoteClose", {
 	font = "Marlett",
-	size = 13,
+	size = 16,
 	weight = 0,
 	symbol = true,
 })
+
+if not draw.ShadowText then
+	function draw.ShadowText(n, f, x, y, c, px, py, shadowColor)
+		draw.SimpleText(n, f, x + 1, y + 1, shadowColor or color_black, px, py)
+		draw.SimpleText(n, f, x, y, c, px, py)
+	end
+end
+
+local COL_BG          = Color(36, 36, 36, 235)
+local COL_ROW         = Color(45, 45, 45, 235)
+local COL_ROW_HOVER   = Color(60, 60, 60, 240)
+local COL_ROW_DOWN    = Color(70, 70, 70, 240)
+local COL_ROW_VOTED   = Color(199, 49, 29, 90)
+local COL_BORDER      = Color(68, 68, 68, 255)
+local COL_ACCENT      = Color(199, 49, 29, 255)
+local COL_TEXT        = Color(220, 220, 220, 255)
+local COL_TEXT_DIM    = Color(190, 190, 190, 255)
+local COL_WHITE       = Color(255, 255, 255, 255)
 
 MapVote.EndTime = 0
 MapVote.Panel = false
@@ -43,7 +80,7 @@ net.Receive("RAM_MapVoteStart", function()
 		MapVote.Panel:Remove()
 	end
 
-	MapVote.Panel = vgui.Create("VoteScreen")
+	MapVote.Panel = vgui.Create("PHE.VoteScreen")
 	MapVote.Panel:SetMaps(MapVote.CurrentMaps)
 end)
 
@@ -86,86 +123,98 @@ function PANEL:Init()
 	self.Canvas = vgui.Create("Panel", self)
 	self.Canvas:MakePopup()
 	self.Canvas:SetKeyboardInputEnabled(false)
+	self.Canvas:SetCursor("arrow")
 
-	self.countDown = vgui.Create("DLabel", self.Canvas)
-	self.countDown:SetTextColor(color_white)
-	self.countDown:SetFont("RAM_VoteFontCountdown")
+	self.Canvas.Paint = function(s, w, h)
+		draw.RoundedBox(8, 0, 0, w, h, COL_BG)
+		surface.SetDrawColor(COL_BORDER)
+		surface.DrawOutlinedRect(0, 0, w, h, 1)
+	end
+
+	self.Header = vgui.Create("Panel", self.Canvas)
+	self.Header.Paint = function(s, w, h)
+		draw.ShadowText("PROP HUNT: ENHANCED", "PHE.MapVoteTitle", 16, 8, COL_ACCENT, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+		draw.ShadowText("Vote for the next map", "PHE.MapVoteSub", 16, 36, COL_TEXT_DIM, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+	end
+
+	self.countDown = vgui.Create("DLabel", self.Header)
+	self.countDown:SetTextColor(COL_WHITE)
+	self.countDown:SetFont("PHE.MapVoteCountdown")
 	self.countDown:SetText("")
-	self.countDown:SetPos(0, 14)
-
-	self.mapList = vgui.Create("DPanelList", self.Canvas)
-	self.mapList:SetPaintBackground(false)
-	self.mapList:SetSpacing(4)
-	self.mapList:SetPadding(4)
-	self.mapList:EnableHorizontal(true)
-	self.mapList:EnableVerticalScrollbar()
+	self.countDown:SetContentAlignment(6)
+	self.countDown:SetExpensiveShadow(1, color_black)
 
 	self.closeButton = vgui.Create("DButton", self.Canvas)
 	self.closeButton:SetText("")
+	self.closeButton:SetCursor("hand")
+	self.closeButton.Paint = function(s, w, h)
+		local bg = Color(255, 255, 255, 10)
+		if s:IsHovered() then bg = COL_ACCENT end
 
-	self.closeButton.Paint = function(panel, w, h)
-		derma.SkinHook("Paint", "WindowCloseButton", panel, w, h)
+		draw.RoundedBox(4, 0, 0, w, h, bg)
+		draw.SimpleText("r", "PHE.MapVoteClose", w / 2, h / 2, COL_WHITE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
-
 	self.closeButton.DoClick = function()
-		print("MapVote has started...")
+		surface.PlaySound("ui/buttonclickrelease.wav")
 		self:SetVisible(false)
 	end
 
-	self.maximButton = vgui.Create("DButton", self.Canvas)
-	self.maximButton:SetText("")
-	self.maximButton:SetDisabled(true)
+	self.mapList = vgui.Create("DPanelList", self.Canvas)
+	self.mapList:SetPaintBackground(false)
+	self.mapList:SetSpacing(6)
+	self.mapList:SetPadding(0)
+	self.mapList:EnableHorizontal(false)
+	self.mapList:EnableVerticalScrollbar()
 
-	self.maximButton.Paint = function(panel, w, h)
-		derma.SkinHook("Paint", "WindowMaximizeButton", panel, w, h)
+	local sbar = self.mapList.VBar
+	if IsValid(sbar) then
+		sbar:SetWide(8)
+		sbar.Paint = function(s, w, h) draw.RoundedBox(4, 0, 0, w, h, Color(20, 20, 20, 150)) end
+		sbar.btnUp:SetTall(0)
+		sbar.btnUp:SetVisible(false)
+		sbar.btnDown:SetTall(0)
+		sbar.btnDown:SetVisible(false)
+		sbar.btnGrip.Paint = function(s, w, h) draw.RoundedBox(4, 0, 0, w, h, Color(90, 90, 90, 220)) end
 	end
 
-	self.minimButton = vgui.Create("DButton", self.Canvas)
-	self.minimButton:SetText("")
-	self.minimButton:SetDisabled(true)
-
-	self.minimButton.Paint = function(panel, w, h)
-		derma.SkinHook("Paint", "WindowMinimizeButton", panel, w, h)
+	self.Footer = vgui.Create("Panel", self.Canvas)
+	self.Footer.Paint = function(s, w, h)
+		draw.ShadowText("Click a map to cast your vote", "PHE.MapVoteSub", 2, 2, COL_TEXT_DIM, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 	end
 
 	self.Voters = {}
 end
 
 function PANEL:PerformLayout()
-	local cx, cy = chat.GetChatBoxPos()
-
 	self:SetPos(0, 0)
 	self:SetSize(ScrW(), ScrH())
 
-	local extra = math.Clamp(300, 0, ScrW() - 640)
-	self.Canvas:StretchToParent(0, 0, 0, 0)
-	self.Canvas:SetWide(640 + extra)
-	-- self.Canvas:SetTall(cy -60)
-	self.Canvas:SetTall(640)
-	self.Canvas:SetPos(0, 0)
-	self.Canvas:CenterHorizontal()
+	local cw = math.Clamp(ScrW() * 0.55, 560, 1000)
+	local ch = math.Clamp(ScrH() * 0.7, 420, 760)
+
+	self.Canvas:SetSize(cw, ch)
+	self.Canvas:Center()
 	self.Canvas:SetZPos(0)
 
-	self.mapList:StretchToParent(0, 90, 0, 0)
+	local pad = 16
 
-	local buttonPos = 640 + extra - 31 * 3
+	self.Header:SetPos(0, 0)
+	self.Header:SetSize(cw, 64)
 
-	self.closeButton:SetPos(buttonPos - 31 * 0, 4)
-	self.closeButton:SetSize(31, 31)
-	self.closeButton:SetVisible(true)
+	self.closeButton:SetSize(28, 28)
+	self.closeButton:SetPos(cw - 28 - 10, 10)
 
-	self.maximButton:SetPos(buttonPos - 31 * 1, 4)
-	self.maximButton:SetSize(31, 31)
-	self.maximButton:SetVisible(true)
+	self.countDown:SetSize(90, 64)
+	self.countDown:SetPos(cw - 100 - 40, 0)
 
-	self.minimButton:SetPos(buttonPos - 31 * 2, 4)
-	self.minimButton:SetSize(31, 31)
-	self.minimButton:SetVisible(true)
+	self.Footer:SetPos(pad, ch - 26)
+	self.Footer:SetSize(cw - pad * 2, 20)
+
+	self.mapList:SetPos(pad, 70)
+	self.mapList:SetSize(cw - pad * 2, ch - 70 - 32)
 end
 
-local heart_mat = Material("icon16/heart.png")
 local star_mat = Material("icon16/star.png")
-local shield_mat = Material("icon16/shield.png")
 
 function PANEL:AddVoter(voter)
 	for k, v in pairs(self.Voters) do
@@ -193,7 +242,7 @@ function PANEL:AddVoter(voter)
 	end
 
 	icon_container.Paint = function(s, w, h)
-		draw.RoundedBox(4, 0, 0, w, h, Color(255, 0, 0, 80))
+		draw.RoundedBox(4, 0, 0, w, h, COL_ROW_VOTED)
 
 		if icon_container.img then
 			surface.SetMaterial(icon_container.img)
@@ -219,15 +268,14 @@ function PANEL:Think()
 			else
 				local bar = self:GetMapButton(MapVote.Votes[v.Player:SteamID()])
 
-				if MapVote.HasExtraVotePower(v.Player) then
-					bar.NumVotes = bar.NumVotes + 2
-				else
-					bar.NumVotes = bar.NumVotes + 1
-				end
-
 				if IsValid(bar) then
-					local CurrentPos = Vector(v.x, v.y, 0)
-					local NewPos = Vector((bar.x + bar:GetWide()) - 21 * bar.NumVotes - 2, bar.y + (bar:GetTall() * 0.5 - 10), 0)
+					if MapVote.HasExtraVotePower(v.Player) then
+						bar.NumVotes = bar.NumVotes + 2
+					else
+						bar.NumVotes = bar.NumVotes + 1
+					end
+
+					local NewPos = Vector((bar.x + bar:GetWide()) - 21 * bar.NumVotes - 6, bar.y + (bar:GetTall() * 0.5 - 10), 0)
 
 					if not v.CurPos or v.CurPos ~= NewPos then
 						v:MoveTo(NewPos.x, NewPos.y, 0.3)
@@ -240,50 +288,79 @@ function PANEL:Think()
 
 	local timeLeft = math.Round(math.Clamp(MapVote.EndTime - CurTime(), 0, math.huge))
 
-	self.countDown:SetText(tostring(timeLeft or 0) .. " seconds")
-	self.countDown:SizeToContents()
-	self.countDown:CenterHorizontal()
+	self.countDown:SetText(tostring(timeLeft or 0))
+	self.countDown:SetTextColor(timeLeft <= 5 and COL_ACCENT or COL_WHITE)
 end
 
 function PANEL:SetMaps(maps)
 	self.mapList:Clear()
 
+	if not maps or #maps == 0 then
+		local empty = vgui.Create("Panel", self.mapList)
+		empty:SetTall(70)
+		empty.Paint = function(s, w, h)
+			draw.RoundedBox(6, 0, 0, w, h, COL_ROW)
+			draw.ShadowText("No eligible maps found", "PHE.MapVoteMapName", w * 0.5, h * 0.5 - 12, COL_TEXT, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+			draw.ShadowText("Check mv_mapprefix, mv_cooldown, and your maps folder", "PHE.MapVoteVotes", w * 0.5, h * 0.5 + 10, COL_TEXT_DIM, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+		end
+		self.mapList:AddItem(empty)
+		return
+	end
+
 	for k, v in RandomPairs(maps) do
 		local button = vgui.Create("DButton", self.mapList)
 		button.ID = k
-		button:SetText(v)
+		button.MapName = v
+		button:SetText("")
+		button:SetCursor("hand")
+
+		local thumb_path = "maps/" .. v .. ".png"
+		local thumb_mat = file.Exists(thumb_path, "GAME") and Material("../" .. thumb_path, "noclamp") or nil
 
 		button.DoClick = function()
+			surface.PlaySound("ui/buttonclick.wav")
+
 			net.Start("RAM_MapVoteUpdate")
 				net.WriteUInt(MapVote.UPDATE_VOTE, 3)
 				net.WriteUInt(button.ID, 32)
 			net.SendToServer()
 		end
 
-		do
-			local Paint = button.Paint
-			button.Paint = function(s, w, h)
-				local col = Color(255, 255, 255, 10)
+		button.Paint = function(s, w, h)
+			local bg = COL_ROW
 
-				if button.bgColor then
-					col = button.bgColor
-				end
-
-				draw.RoundedBox(4, 0, 0, w, h, col)
-				Paint(s, w, h)
+			if button.bgColor then
+				bg = button.bgColor
+			elseif s:IsDown() then
+				bg = COL_ROW_DOWN
+			elseif s:IsHovered() then
+				bg = COL_ROW_HOVER
 			end
+
+			draw.RoundedBox(6, 0, 0, w, h, bg)
+
+			if MapVote.Votes[LocalPlayer():SteamID()] == button.ID then
+				draw.RoundedBoxEx(6, 0, 0, 4, h, COL_ACCENT, true, false, true, false)
+			end
+
+			local textX = 14
+
+			if thumb_mat then
+				local thumbSize = h - 12
+				surface.SetDrawColor(255, 255, 255, 255)
+				surface.SetMaterial(thumb_mat)
+				surface.DrawTexturedRect(10, 6, thumbSize, thumbSize)
+				textX = 10 + thumbSize + 12
+			end
+
+			draw.ShadowText(button.MapName, "PHE.MapVoteMapName", textX, 9, COL_TEXT, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+			local voteLabel = (button.NumVotes or 0) == 1 and "1 vote" or (button.NumVotes or 0) .. " votes"
+			draw.ShadowText(voteLabel, "PHE.MapVoteVotes", textX, h - 9, COL_TEXT_DIM, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 		end
 
-		button:SetTextColor(color_white)
-		button:SetContentAlignment(4)
-		button:SetTextInset(8, 0)
-		button:SetFont("RAM_VoteFont")
-
-		local extra = math.Clamp(300, 0, ScrW() - 640)
-
 		button:SetPaintBackground(false)
-		button:SetTall(24)
-		button:SetWide(285 + (extra / 2))
+		button:SetTall(50)
 		button.NumVotes = 0
 
 		self.mapList:AddItem(button)
@@ -299,12 +376,7 @@ function PANEL:GetMapButton(id)
 end
 
 function PANEL:Paint()
-	--Derma_DrawBackgroundBlur(self)
-
-	local CenterY = ScrH() / 2
-	local CenterX = ScrW() / 2
-
-	surface.SetDrawColor(0, 0, 0, 200)
+	surface.SetDrawColor(0, 0, 0, 180)
 	surface.DrawRect(0, 0, ScrW(), ScrH())
 end
 
@@ -314,13 +386,13 @@ function PANEL:Flash(id)
 	local bar = self:GetMapButton(id)
 
 	if IsValid(bar) then
-		timer.Simple(0.0, function() bar.bgColor = Color(0, 255, 255) surface.PlaySound("hl1/fvox/blip.wav") end)
-		timer.Simple(0.2, function() bar.bgColor = nil end)
-		timer.Simple(0.4, function() bar.bgColor = Color(0, 255, 255) surface.PlaySound("hl1/fvox/blip.wav") end)
-		timer.Simple(0.6, function() bar.bgColor = nil end)
-		timer.Simple(0.8, function() bar.bgColor = Color(0, 255, 255) surface.PlaySound("hl1/fvox/blip.wav") end)
-		timer.Simple(1.0, function() bar.bgColor = Color(100, 100, 100) end)
+		timer.Simple(0.0, function() if IsValid(bar) then bar.bgColor = COL_ACCENT surface.PlaySound("hl1/fvox/blip.wav") end end)
+		timer.Simple(0.2, function() if IsValid(bar) then bar.bgColor = nil end end)
+		timer.Simple(0.4, function() if IsValid(bar) then bar.bgColor = COL_ACCENT surface.PlaySound("hl1/fvox/blip.wav") end end)
+		timer.Simple(0.6, function() if IsValid(bar) then bar.bgColor = nil end end)
+		timer.Simple(0.8, function() if IsValid(bar) then bar.bgColor = COL_ACCENT surface.PlaySound("hl1/fvox/blip.wav") end end)
+		timer.Simple(1.0, function() if IsValid(bar) then bar.bgColor = Color(100, 100, 100, 220) end end)
 	end
 end
 
-derma.DefineControl("VoteScreen", "", PANEL, "DPanel")
+derma.DefineControl("PHE.VoteScreen", "", PANEL, "DPanel")

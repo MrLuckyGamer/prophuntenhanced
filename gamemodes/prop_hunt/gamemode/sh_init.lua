@@ -56,7 +56,7 @@ IncludePlayerClasses()
 GM.Name		= "Prop Hunt: ENHANCED"
 GM.Author	= "Wolvindra-Vinzuerio, Jai Choccy Fox, & Lucky"
 
-GM._VERSION = "21-06-2026"
+GM._VERSION = "25-06-2026"
 GM.DONATEURL = "https://prophuntenhanced.xyz/donate"
 
 -- Format PHE.LANG.Help
