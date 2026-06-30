@@ -60,6 +60,109 @@ local COL_WHITE       = Color(255, 255, 255, 255)
 
 MapVote.EndTime = 0
 MapVote.Panel = false
+MapVote.ThumbCache = MapVote.ThumbCache or {}
+
+local THUMB_LOCAL_PATHS = {
+	"maps/thumb/%s.png",
+	"maps/thumb/%s.jpg",
+	"maps/%s.png",
+	"materials/maps/%s.png",
+	"materials/thumbnails/%s.png",
+	"materials/vgui/maps/%s.png",
+}
+
+local GAMETRACKER_URLS = {
+	"http://image.gametracker.com/images/maps/160x120/garrysmod/%s.jpg",
+	"http://image.gametracker.com/images/maps/160x120/css/%s.jpg",
+}
+
+local function TryLoadMaterial(path)
+	local mat = Material(path, "noclamp")
+
+	if not mat or mat:IsError() then return nil end
+
+	return mat
+end
+
+local function FindLocalThumb(mapname)
+	for _, fmt in ipairs(THUMB_LOCAL_PATHS) do
+		local relpath = string.format(fmt, mapname)
+
+		if file.Exists(relpath, "GAME") then
+			local mat = TryLoadMaterial("../" .. relpath)
+			if mat then return mat end
+		end
+	end
+
+	return nil
+end
+
+function MapVote.GetThumbnail(mapname, callback)
+	local cached = MapVote.ThumbCache[mapname]
+	if cached ~= nil then
+		callback(cached or nil)
+		return
+	end
+
+	local local_mat = FindLocalThumb(mapname)
+	if local_mat then
+		MapVote.ThumbCache[mapname] = local_mat
+		callback(local_mat)
+		return
+	end
+
+	if GetConVar("mv_thumb_gametracker") and not GetConVar("mv_thumb_gametracker"):GetBool() then
+		MapVote.ThumbCache[mapname] = false
+		callback(nil)
+		return
+	end
+
+	local data_rel = "phe_mapthumbs/" .. mapname .. ".jpg"
+
+	if file.Exists("data/" .. data_rel, "GAME") then
+		local mat = TryLoadMaterial("../data/" .. data_rel)
+		MapVote.ThumbCache[mapname] = mat or false
+		callback(mat)
+		return
+	end
+
+	if not file.IsDir("phe_mapthumbs", "DATA") then
+		file.CreateDir("phe_mapthumbs")
+	end
+
+	local urls = GAMETRACKER_URLS
+	local attempt
+
+	attempt = function(i)
+		local url = urls[i]
+
+		if not url then
+			MapVote.ThumbCache[mapname] = false
+			callback(nil)
+			return
+		end
+
+		http.Fetch(string.format(url, mapname),
+			function(body, len, headers, code)
+				if code ~= 200 or not body or len == 0 then
+					attempt(i + 1)
+					return
+				end
+
+				file.Write(data_rel, body)
+
+				local mat = TryLoadMaterial("../data/" .. data_rel)
+				MapVote.ThumbCache[mapname] = mat or false
+				callback(mat)
+			end,
+			function(err)
+				attempt(i + 1)
+			end
+		)
+	end
+
+	attempt(1)
+end
 
 net.Receive("RAM_MapVoteStart", function()
 	MapVote.CurrentMaps = {}
@@ -314,8 +417,13 @@ function PANEL:SetMaps(maps)
 		button:SetText("")
 		button:SetCursor("hand")
 
-		local thumb_path = "maps/" .. v .. ".png"
-		local thumb_mat = file.Exists(thumb_path, "GAME") and Material("../" .. thumb_path, "noclamp") or nil
+		button.ThumbMat = nil
+
+		MapVote.GetThumbnail(v, function(mat)
+			if IsValid(button) then
+				button.ThumbMat = mat
+			end
+		end)
 
 		button.DoClick = function()
 			surface.PlaySound("ui/buttonclick.wav")
@@ -345,10 +453,10 @@ function PANEL:SetMaps(maps)
 
 			local textX = 14
 
-			if thumb_mat then
+			if button.ThumbMat then
 				local thumbSize = h - 12
 				surface.SetDrawColor(255, 255, 255, 255)
-				surface.SetMaterial(thumb_mat)
+				surface.SetMaterial(button.ThumbMat)
 				surface.DrawTexturedRect(10, 6, thumbSize, thumbSize)
 				textX = 10 + thumbSize + 12
 			end
