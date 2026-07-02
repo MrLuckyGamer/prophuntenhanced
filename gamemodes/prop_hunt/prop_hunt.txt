@@ -1,7 +1,7 @@
 "prop_hunt"
 {
 	"base"		"base"
-	"title"		"Prop Hunt: Enhanced"
+	"title"		"Prop Hunt: ENHANCED"
 	"maps"      "^ph_"
 
 	"fretta_maps"

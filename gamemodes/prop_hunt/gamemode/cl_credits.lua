@@ -21,7 +21,7 @@ hook.Add("PH_CustomTabMenu", "PHE.About", function(tab, pVgui)
 	grid:SetRowHeight(50)
 
 	local label = {
-		title 	= "Prop Hunt: Enhanced",
+		title 	= "Prop Hunt: ENHANCED",
 		authors	= "Wolvindra-Vinzuerio, Jai Choccy Fox, & Lucky", 
 		version = GAMEMODE._VERSION,
 		credits	= "Yam, Lucky, Godfather, adk, Lucas2107, Jonpopnycorn, Thundernerd, stephanlachnit, Fafy & KO-pKAs3tnj5sU8e85yuXA",

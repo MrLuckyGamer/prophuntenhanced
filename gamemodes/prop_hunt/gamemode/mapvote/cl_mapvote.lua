@@ -236,7 +236,7 @@ function PANEL:Init()
 
 	self.Header = vgui.Create("Panel", self.Canvas)
 	self.Header.Paint = function(s, w, h)
-		draw.ShadowText("PROP HUNT: ENHANCED", "PHE.MapVoteTitle", 16, 8, COL_ACCENT, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+		draw.ShadowText("Prop Hunt: ENHANCED", "PHE.MapVoteTitle", 16, 8, COL_ACCENT, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 		draw.ShadowText("Vote for the next map", "PHE.MapVoteSub", 16, 36, COL_TEXT_DIM, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 	end
 

@@ -32,80 +32,62 @@ If you wanted for workshop version (ideal for personal/private gaming with your 
 Here is also a map and addon pack for the gamemode, if you are looking for some addons.
 https://steamcommunity.com/sharedfiles/filedetails/?id=1760588052
 
-## Update (25-06-2026)
-Revamp map vote UI; tweak configs & title
-See Workshop or GitHub [change notes](https://github.com/MrLuckyGamer/prophuntenhanced/commit/659cea878d9e6e6da9308e8f661cee4a60da2ea8) for full list of changes
+## Features
+Core Menus & UI
+* New default TAB menu (replaces the old Fretta menu)
+* Redesigned, reworked Prop Hunt [F1] menu with improved server configuration
+* Revamped map vote UI
+* Refactored networked UI/events for better performance
 
-## Update (21-06-2026)
-Refactor networked UI/events and add config options
-See Workshop or GitHub [change notes](https://github.com/MrLuckyGamer/prophuntenhanced/commit/6a4d9104c4a698e5049a2fb9b5b2c78559e4a9b9) for full list of changes
+Team & Role Management
+* Improved team balancing system with sensible defaults and customizable Hunter count
+* Automatic team shuffling
+* Option to prevent being a Hunter twice in a row
+* Ability to force someone to be a Prop next round
+* Rotating roles option, so everyone plays each role an equal number of times
 
-## NEW Features (15-12-2024)
-This version adds a few new features:
-* New Default TAB Menu (No more crappy Default Fretta Menu)
-* An improved team balancing system, which now uses more sensible defaults, and allows using a personalised amount of Hunters
-* Automatic team shuffling, so people no longer have to manually pick a team
-* An option to prevent being a Hunter twice in a row, as well as a way to force someone to be a Prop during the next round, in case the shuffling is a bit too random for you :)
-* An option to use rotating roles, so that everyone plays each role the same number of times
-* A configurable unstucking system: getting stuck in a wall is no longer a death sentence (F3 or !unstuck)
-* Taunts can now be pitched up or down, as much as the server admin allows it!
-* An experimental, more lenient collision system, which solves some props being unable to touch walls, but introduces some clipping (disabled by default)
-* And many other enhancements and fixes!
+Movement & Gameplay
+* Configurable unstuck system (F3 or !unstuck)
+* Smoother prop movement, no more "laggy-jaggy" movement
+* Prop rotating
+* Camera collision
+* Freeze cam feature
+* Experimental lenient collision system (optional, off by default)
+* Fixed viewmodels
 
-## Of course, all of PH:E's original features are still here, most notably:
+Audio & Taunts
+* Named taunts (no more "weirdnames.wav")
+* Pitch-adjustable taunts (admin-configurable range)
+* New auto-taunt features
+* New custom taunts window
+* New end-of-round sound cue
+
+Visuals & Cosmetics
 * Prop Hunt: Enhanced HUD
-* Lucky Balls Icon
-* "Named-Taunts", no more "weirdnames.wav" anymore!
-* Improved UI and Redesigned, Re-worked Prop Hunt [F1] Menu
-* Smoother Props Movement, No more *"laggy-jaggy"* movement!
-* New Auto-Taunt features
-* MapVote: You are now able to grab from Whitelisted ULX Votemaps maplist
-* New Hooks Added! (See **Wiki: Help & FAQ)
-* Improved Server Configuration via [F1] Prop Hunt Menu
-* Prop Rotating
-* Freeze Cam Feature
-* Camera Collision
-* Prop Halo
+* Lucky Balls icon, plus new Lucky Balls and weapons
+* Prop halo
 * New flashlight method for props
-* Additional models for props
+* Additional prop models
 * 4 new random hunter skins
-* Fixed viewmodels
-* New Lucky Balls
-* New weapons from Lucky Balls
-* New Custom Taunts Window
-* New Sound cue for end round
-* Added "Waiting for Players..." options
-* Fixed and enhanced fretta codes
-* ...and many more!
+* Map thumbnail caching
 
-## Key Feature List
-* New Prop Hunt: Enhanced HUD
-* New Lucky Balls Icon
-* New "Named-Taunts", no more "weirdnames.wav" anymore!
-* Improved UI and Redesigned, Re-worked Prop Hunt [F1] Menu
-* Smoother Props Movement, No more *"laggy-jaggy"* movement!
-* New Auto-Taunt features
-* MapVote: You are now able to grab from Whitelisted ULX Votemaps maplist
-* New Hooks Added! (See **Wiki: Help & FAQ)
-* Improved Server Configuration via [F1] Prop Hunt Menu
-* Prop Rotating
-* Freeze Cam Feature
-* Camera Collision
-* Prop Halo
-* New flashlight method for props
-* Additional models for props
-* 4 new random hunter skins
-* Fixed viewmodels
-* New Lucky Balls
-* New weapons from Lucky Balls
-* New Custom Taunts Window
-* New Sound cue for end round
-* Added "Waiting for Players..." options
-* Fixed and enhanced fretta codes
-* ...and many more!
+Map Voting
+* Pull maps from whitelisted ULX votemaps maplist
+
+Server & Admin Tools
+* New hooks for developers (see Wiki)
+* "Waiting for Players..." options
+* Fixed and enhanced Fretta code
+* Expanded config options
+* GameTracker support
+
+See the Steam Workshop or GitHub [change notes](https://github.com/MrLuckyGamer/prophuntenhanced/commits/master/) for the full, detailed changelog.
 
 ## Support
 Before asking myself or the comments for support, please consider visiting our website https://prophuntenhanced.xyz/ or wiki https://wiki.prophuntenhanced.xyz/
+
+Gamemode is best played on the Chromium branch of Garry's Mod
+![Chromium](https://i.imgur.com/6YgiKsj.png)
 
 ## CREDITS
 This is my modified version of Wolvins Prophunt: Enhanced, due to Wolvins termination of the gamemode.

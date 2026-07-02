@@ -13,7 +13,7 @@ function ph_BaseMainWindow(ply, cmd, args)
 		end
 	end
 	frm:SetSize(getMenuSize())
-	frm:SetTitle("Prop Hunt: Enhanced | Help & Settings menu")
+	frm:SetTitle("Prop Hunt: ENHANCED | Help & Settings menu")
 	frm:SetSizable(false)
 	frm:SetScreenLock(true)
 
