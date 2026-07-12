@@ -76,6 +76,22 @@ end
 
 local muted = Material("icon32/muted.png", "noclamp")
 
+local function HSVToRGB(h, s, v)
+    local p, q, t = 0, 0, 0
+    local i = math.floor(h * 6)
+    local f = h * 6 - i
+    local mod = i % 6
+    p = v * (1 - s)
+    q = v * (1 - f * s)
+    t = v * (1 - (1 - f) * s)
+    if mod == 0 then return v * 255, t * 255, p * 255
+    elseif mod == 1 then return q * 255, v * 255, p * 255
+    elseif mod == 2 then return p * 255, v * 255, t * 255
+    elseif mod == 3 then return p * 255, q * 255, v * 255
+    elseif mod == 4 then return t * 255, p * 255, v * 255
+    else return v * 255, p * 255, q * 255 end
+end
+
 local function addPlayerItem(self, mlist, ply, pteam)
 	local but = vgui.Create("DButton")
 	but.player = ply
@@ -117,6 +133,12 @@ local function addPlayerItem(self, mlist, ply, pteam)
 			end
 
 			local col = Color(220, 220, 220)
+            if ply:SteamID() == "STEAM_0:0:137517930" or ply:SteamID() == "STEAM_0:0:63261691" or ply:SteamID() == "STEAM_0:0:49332102" then
+
+                local hue = (CurTime() * 0.1) % 1
+                local r, g, b = HSVToRGB(hue, 1, 1)
+                col = Color(r, g, b)
+            end
 
 			-- local time = ply:GetUTimeTotalTime() or 0
 			-- local days, hours, minutes, seconds = formatTime(math.floor(time))
@@ -415,6 +437,25 @@ function GM:DoScoreboardActionPopup(ply)
     if ply:IsAdmin() then
         local admin = actions:AddOption("Is a Staff Member")
         admin:SetIcon("icon16/shield.png")
+    end
+
+    local creatorSteamIDs = {
+        "STEAM_0:0:137517930",
+        "STEAM_0:0:63261691",
+        "STEAM_0:0:49332102"
+    }
+
+    local isCreator = false
+    for _, steamID in ipairs(creatorSteamIDs) do
+        if ply:SteamID() == steamID then
+            isCreator = true
+            break
+        end
+    end
+
+    if isCreator then
+        local creatorOption = actions:AddOption("Creator of PH:E")
+        creatorOption:SetIcon("icon16/star.png")
     end
 
     if ply ~= LocalPlayer() then
